@@ -1,0 +1,27 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CustomerDemo.Views.ClientsView"
+             x:DataType="viewModels:ClientsViewModel"
+             Background="Transparent">
+    <Design.DataContext>
+        <viewModels:ClientsViewModel/>
+    </Design.DataContext>
+    
+    <Grid>
+        <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <TextBlock Text="Client"
+                       FontSize="24"
+                       HorizontalAlignment="Center"/>
+            <Button Content="New Client"
+                    Margin="10"
+                    Command="{Binding NavigateToNewClientCommand}"/>
+        </StackPanel>
+        
+    </Grid>
+    
+</UserControl>
