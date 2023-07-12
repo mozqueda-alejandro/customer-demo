@@ -2,34 +2,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             
              xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+             xmlns:ui="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CustomerDemo.Views.NewClientView"
              x:DataType="viewModels:NewClientViewModel">
     <Grid RowDefinitions="Auto,*">
-        <TextBlock Grid.Row="0" Text="Add New Client"
-                   Margin="128,48"
-                   Theme="{StaticResource DisplayTextBlockStyle}"/>
+        <StackPanel>
+            <TextBlock Text="Add New Client"
+                       Margin="128,48"
+                       Theme="{StaticResource TitleTextBlockStyle}"/>
+        </StackPanel>
+        
         <Grid Row="1" ColumnDefinitions="*,192,64,192,*">
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <TextBlock Text="First Name" Margin="0,0,0,4"/>
+                <TextBlock Text=" First Name" Margin="0,0,0,4"/>
                 <TextBox></TextBox>
                 
-                <TextBlock Text="Last Name" Margin="0,32,0,4"/>
+                <TextBlock Text=" Last Name" Margin="0,32,0,4"/>
                 <TextBox></TextBox>
                 
-                <TextBlock Text="Address" Margin="0,32,0,4"/>
+                <TextBlock Text=" Address" Margin="0,32,0,4"/>
                 <TextBox></TextBox>
             </StackPanel>
             <StackPanel Grid.Column="3" Orientation="Vertical">
-                <TextBlock Text="Email" Margin="0,0,0,4"/>
+                <TextBlock Text=" Email" Margin="0,0,0,4"/>
                 <TextBox></TextBox>
                 
-                <TextBlock Text="Phone" Margin="0,32,0,4"/>
+                <TextBlock Text=" Phone" Margin="0,32,0,4"/>
                 <TextBox></TextBox>
                 
-                <TextBlock Text="Source" Margin="0,32,0,4"/>
+                <TextBlock Text=" Source" Margin="0,32,0,4"/>
                 <ComboBox Width="192" Margin="0,0,0,32">
                     <ComboBoxItem Content="Website"/>
                     <ComboBoxItem Content="Referral"/>
@@ -40,8 +43,7 @@
                 <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
                     <Button Content="Save" Margin="0,0,16,0"
                             Command="{Binding SaveClientCommand}"
-                            Background="{StaticResource AccentButtonBackground}"
-                            Foreground="{StaticResource AccentButtonForeground}">
+                            Classes="accent">
                     </Button>
                     <Button Content="Cancel"
                             Command="{Binding NavigateToClientsCommand}"/>

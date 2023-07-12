@@ -31,5 +31,10 @@
             <views:NewClientView/>
         </DataTemplate>
         
+        <!-- Display Fluent icons -->
+        <!-- <ui:FontIcon Glyph="&#xE10B;" FontFamily="{StaticResource SymbolThemeFontFamily}" -->
+        <!--              FontSize="24"/> -->
+        <!-- <ui:SymbolIcon Symbol="Find" FontSize="24"/> -->
+        
     </Application.DataTemplates>
 </Application>

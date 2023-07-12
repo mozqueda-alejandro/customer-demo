@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia">
+    
+    <!-- Define SymbolIconSources and FontIconSources as below -->
+    <!-- <ui:SymbolIconSource x:Key="SaveIcon" Symbol="Save"/> -->
+    <controls:FontIconSource x:Key="GlobalNavButtonIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE700;"/>
+    <controls:FontIconSource x:Key="PaymentCardIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8C7;"/>
+    <controls:FontIconSource x:Key="ShoppingCartIcon" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BF;"/>
+    <controls:FontIconSource x:Key="ReportDocumentIcon" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE9F9;"/>
+    <controls:FontIconSource x:Key="ConstructionIcon" FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE98F;"/>
+    
+</ResourceDictionary>

@@ -11,17 +11,27 @@
         <viewModels:ClientsViewModel/>
     </Design.DataContext>
     
-    <Grid>
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <TextBlock Text="Client"
-                       FontSize="24"
-                       HorizontalAlignment="Center"/>
-            <Button Content="New Client"
-                    Margin="10"
-                    Command="{Binding NavigateToNewClientCommand}"/>
-        </StackPanel>
+    <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto">
+            <TextBlock Grid.Column="0" Text="Client Database"
+                       Margin="128,48"
+                       Theme="{StaticResource TitleTextBlockStyle}"/>
+            <Button Grid.Column="2"
+                    Content="Add Client"
+                    Margin="128,48"
+                    Command="{Binding NavigateToNewClientCommand}">
+                <Button.Template></Button.Template>
+            </Button>
+        </Grid>
         
+        <Border Grid.Row="1" 
+                BorderThickness="10"
+                BorderBrush="Brown"
+                Margin="128,0">  
+            <DataGrid Grid.Row="1" AutoGenerateColumns="True" ItemsSource="{Binding Clients}">
+                
+            </DataGrid>
+        </Border>  
     </Grid>
     
 </UserControl>

@@ -3,12 +3,16 @@
         xmlns:vm="using:CustomerDemo.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="using:FluentAvalonia.UI.Controls"
+        xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="CustomerDemo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="CustomerDemo"
-        PointerPressed="InputElement_OnPointerPressed">
+        Title="Cimental Masonry Demo"
+        Focusable="True"
+        x:Name="MainWindowControl"
+        PointerPressed="MainWindow_OnPointerPressed">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -16,36 +20,89 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
     
-    <Grid ColumnDefinitions="128,*">
-        <Border Background="#121212"></Border>
-        <StackPanel Grid.Column="0">
-            <Button Width="100"
-                    Margin="12"
-                    HorizontalAlignment="Center"
-                    Command="{Binding NavigateToHomeCommand}">
-                <TextBlock Text="Home"
-                           HorizontalAlignment="Center"/>
-            </Button>
-
-            <Button Width="100"
-                    Margin="12,0,12,12"
-                    HorizontalAlignment="Center"
-                    Command="{Binding NavigateToClientsCommand}">
-                <TextBlock Text="Clients"
-                           HorizontalAlignment="Center"/>
-            </Button>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="/Assets/NavigationViewIcons.axaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <!-- <Grid ColumnDefinitions="Auto,*"> -->
+        <ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" OpenPaneLength="256" Content="{Binding NavigationService.CurrentView}">
+            <ui:NavigationView.MenuItems>
             
-            <Button Width="100"
-                    Margin="12,0,12,12"
-                    HorizontalAlignment="Center"
-                    Command="{Binding NavigateToSettingsCommand}">
-                <TextBlock Text="Settings"
-                           HorizontalAlignment="Center"/>
-            </Button>
-        </StackPanel>
+                <ui:NavigationViewItem Content="Home" Tag="TestView" IconSource="Home"/>
+                <ui:NavigationViewItemSeparator/>
+                <ui:NavigationViewItem Content="Dashboard" Tag="HomeView" IconSource="ViewAll" />
+            
+                <ui:NavigationViewItem Content="Sales and Payments" Tag="SamplePage2"
+                                       IconSource="{StaticResource PaymentCardIcon}">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Estimates" />
+                        <ui:NavigationViewItem Content="Invoices" />
+                        <ui:NavigationViewItem Content="Clients" />
+                        <ui:NavigationViewItem Content="Inventory" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem Content="Purchases" Tag="SamplePage3" IconSource="{StaticResource ShoppingCartIcon}" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Bills" />
+                        <ui:NavigationViewItem Content="Vendors" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem Content="Accounting" Tag="SamplePage3" IconSource="Library" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Transactions" />
+                        <ui:NavigationViewItem Content="Chart of Accounts" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem Content="Payroll" Tag="SamplePage3" IconSource="People" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Content="Employees" />
+                        <ui:NavigationViewItem Content="Upload file" />
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem Content="Reports" IconSource="{StaticResource ReportDocumentIcon}"/>
+            
+                <ui:NavigationViewItem Content="Material Library" IconSource="{StaticResource ConstructionIcon}"/>
+            
+            </ui:NavigationView.MenuItems>
+        </ui:NavigationView>
+        <!-- <Border Background="#121212"></Border> -->
         
-        <ContentControl Grid.Column="1"
-                        Content="{Binding NavigationService.CurrentView}"/>
-    </Grid>
+        <!-- <StackPanel Grid.Column="0"> -->
+        <!-- <Button Width="100" -->
+            <!--         Margin="12" -->
+            <!--         HorizontalAlignment="Center" -->
+            <!--         Command="{Binding NavigateToHomeCommand}"> -->
+            <!--     <TextBlock Text="Home" -->
+            <!--                HorizontalAlignment="Center"/> -->
+            <!-- </Button> -->
+            <!-- -->
+            <!-- <Button Width="100" -->
+            <!--         Margin="12,0,12,12" -->
+            <!--         HorizontalAlignment="Center" -->
+            <!--         Command="{Binding NavigateToClientsCommand}"> -->
+            <!--     <TextBlock Text="Clients" -->
+            <!--                HorizontalAlignment="Center"/> -->
+            <!-- </Button> -->
+            <!-- -->
+            <!-- <Button Width="100" -->
+            <!--         Margin="12,0,12,12" -->
+            <!--         HorizontalAlignment="Center" -->
+            <!--         Command="{Binding NavigateToSettingsCommand}"> -->
+            <!--     <TextBlock Text="Settings" -->
+            <!--                HorizontalAlignment="Center"/> -->
+            <!-- </Button> -->
+        <!-- </StackPanel> -->
+        
+        <!-- <ContentControl Grid.Column="1" -->
+        <!--                 Content="{Binding NavigationService.CurrentView}"/> -->
+    <!-- </Grid> -->
 
 </Window>
