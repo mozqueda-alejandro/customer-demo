@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Metadata;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -15,13 +16,18 @@ public partial class MainWindowViewModel : ViewModelBase
     private INavigationService? _navigationService;
 
     [ObservableProperty]
-    private object _selectedCategory;
+    private object? _selectedCategory;
+    partial void OnSelectedCategoryChanged(object? placeholder)
+    {
+        SetCurrentPage();
+    }
 
     [ObservableProperty]
-    private Control _currentPage;
+    private Control? _currentPage;
 
-    
-    [RelayCommand]
+    public List<CategoryBase> Categories { get; }
+
+    #region NavigationService
     private void NavigateToHome() => NavigationService?.NavigateTo<HomeViewModel>();
     
     [RelayCommand]
@@ -29,20 +35,45 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [RelayCommand]
     private void NavigateToClients() => NavigationService?.NavigateTo<ClientsViewModel>();
+    #endregion
 
-    public MainWindowViewModel()
-    {
-    }
+    public MainWindowViewModel() { }
     
     public MainWindowViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
-        NavigateToHome();
         
-        
+        Categories = new List<CategoryBase>
+        {
+            new Category { Name = "Home", Icon = Symbol.Home, ToolTip = "Home" },
+            new Separator(),
+            new Category { Name = "Dashboard", Icon = Symbol.ViewAll, ToolTip = "Dashboard" }
+        };
+
+        SelectedCategory = Categories[0];
+    }
+    
+    private void SetCurrentPage()
+    {
+        if (SelectedCategory is Category cat)
+        {
+            if (cat == Categories[0])
+            {
+                NavigateToHome();
+            }
+            else if (cat == Categories[2])
+            {
+                NavigateToClients();
+            }
+        }
+        else if (SelectedCategory is NavigationViewItem nvi)
+        {
+            NavigateToSettings();
+        }
     }
 }
 
+#region FluentAvalonia NavigationView code
 public abstract class CategoryBase { }
 
 public class Separator : CategoryBase { }
@@ -66,3 +97,4 @@ public class MenuItemTemplateSelector : DataTemplateSelector
         return item is Separator ? SeparatorTemplate : ItemTemplate;
     }
 }
+#endregion

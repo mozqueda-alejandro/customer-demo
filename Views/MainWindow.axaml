@@ -29,80 +29,43 @@
     </Window.Resources>
     
     <!-- <Grid ColumnDefinitions="Auto,*"> -->
-        <ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" OpenPaneLength="256" Content="{Binding NavigationService.CurrentView}">
-            <ui:NavigationView.MenuItems>
+        <ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" OpenPaneLength="256"
+                           IsSettingsVisible="False"
+                           MenuItemsSource="{Binding Categories}"
+                           Content="{Binding NavigationService.CurrentView}"
+                           SelectedItem="{Binding SelectedCategory}"
+                           >
+            <ui:NavigationView.MenuItemTemplateSelector>
+                <!-- 
+                    If you need to bind to multiple different containers,
+				    like including separators, you'll need to use a DataTemplateSelector
+                    -->
+                <vm:MenuItemTemplateSelector>
+                    <!-- 
+						Default DataTemplate
+						Our binded collection has 4 items and a Separator. This template
+						will apply to all items, the separator was defined in the 
+						MenuItemTemplateSelector
+						-->
+                    <!-- <TreeDataTemplate> -->
+                    <!--      -->
+                    <!-- </TreeDataTemplate> -->
+                    
+                    <DataTemplate DataType="{x:Type vm:Category}">
+                        <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
+                    </DataTemplate>
+
+                    <vm:MenuItemTemplateSelector.SeparatorTemplate>
+                        <DataTemplate DataType="{x:Type vm:Separator}">
+                            <ui:NavigationViewItemSeparator />
+                        </DataTemplate>
+                    </vm:MenuItemTemplateSelector.SeparatorTemplate>
+                </vm:MenuItemTemplateSelector>
+            </ui:NavigationView.MenuItemTemplateSelector>               
             
-                <ui:NavigationViewItem Content="Home" Tag="TestView" IconSource="Home"/>
-                <ui:NavigationViewItemSeparator/>
-                <ui:NavigationViewItem Content="Dashboard" Tag="HomeView" IconSource="ViewAll" />
-            
-                <ui:NavigationViewItem Content="Sales and Payments" Tag="SamplePage2"
-                                       IconSource="{StaticResource PaymentCardIcon}">
-                    <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem Content="Estimates" />
-                        <ui:NavigationViewItem Content="Invoices" />
-                        <ui:NavigationViewItem Content="Clients" />
-                        <ui:NavigationViewItem Content="Inventory" />
-                    </ui:NavigationViewItem.MenuItems>
-                </ui:NavigationViewItem>
-            
-                <ui:NavigationViewItem Content="Purchases" Tag="SamplePage3" IconSource="{StaticResource ShoppingCartIcon}" SelectsOnInvoked="False">
-                    <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem Content="Bills" />
-                        <ui:NavigationViewItem Content="Vendors" />
-                    </ui:NavigationViewItem.MenuItems>
-                </ui:NavigationViewItem>
-            
-                <ui:NavigationViewItem Content="Accounting" Tag="SamplePage3" IconSource="Library" SelectsOnInvoked="False">
-                    <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem Content="Transactions" />
-                        <ui:NavigationViewItem Content="Chart of Accounts" />
-                    </ui:NavigationViewItem.MenuItems>
-                </ui:NavigationViewItem>
-            
-                <ui:NavigationViewItem Content="Payroll" Tag="SamplePage3" IconSource="People" SelectsOnInvoked="False">
-                    <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem Content="Employees" />
-                        <ui:NavigationViewItem Content="Upload file" />
-                    </ui:NavigationViewItem.MenuItems>
-                </ui:NavigationViewItem>
-            
-                <ui:NavigationViewItem Content="Reports" IconSource="{StaticResource ReportDocumentIcon}"/>
-            
-                <ui:NavigationViewItem Content="Material Library" IconSource="{StaticResource ConstructionIcon}"/>
-            
-            </ui:NavigationView.MenuItems>
+            <!-- <ui:NavigationView.MenuItems> -->
+            <!--     <ui:NavigationViewItem Content="Smth" IconSource="ViewAll" Tag=""/> -->
+            <!-- </ui:NavigationView.MenuItems> -->
         </ui:NavigationView>
-        <!-- <Border Background="#121212"></Border> -->
-        
-        <!-- <StackPanel Grid.Column="0"> -->
-        <!-- <Button Width="100" -->
-            <!--         Margin="12" -->
-            <!--         HorizontalAlignment="Center" -->
-            <!--         Command="{Binding NavigateToHomeCommand}"> -->
-            <!--     <TextBlock Text="Home" -->
-            <!--                HorizontalAlignment="Center"/> -->
-            <!-- </Button> -->
-            <!-- -->
-            <!-- <Button Width="100" -->
-            <!--         Margin="12,0,12,12" -->
-            <!--         HorizontalAlignment="Center" -->
-            <!--         Command="{Binding NavigateToClientsCommand}"> -->
-            <!--     <TextBlock Text="Clients" -->
-            <!--                HorizontalAlignment="Center"/> -->
-            <!-- </Button> -->
-            <!-- -->
-            <!-- <Button Width="100" -->
-            <!--         Margin="12,0,12,12" -->
-            <!--         HorizontalAlignment="Center" -->
-            <!--         Command="{Binding NavigateToSettingsCommand}"> -->
-            <!--     <TextBlock Text="Settings" -->
-            <!--                HorizontalAlignment="Center"/> -->
-            <!-- </Button> -->
-        <!-- </StackPanel> -->
-        
-        <!-- <ContentControl Grid.Column="1" -->
-        <!--                 Content="{Binding NavigationService.CurrentView}"/> -->
-    <!-- </Grid> -->
 
 </Window>
