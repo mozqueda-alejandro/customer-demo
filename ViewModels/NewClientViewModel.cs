@@ -34,5 +34,5 @@ public partial class NewClientViewModel : ViewModelBase
     {
         
     }
-    
+
 }

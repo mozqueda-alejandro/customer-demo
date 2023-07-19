@@ -10,8 +10,8 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Cimental Masonry Demo"
-        Focusable="True"
         x:Name="MainWindowControl"
+        Focusable="True"
         PointerPressed="MainWindow_OnPointerPressed">
 
     <Design.DataContext>
@@ -27,45 +27,60 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
     <!-- <Grid ColumnDefinitions="Auto,*"> -->
-        <ui:NavigationView x:Name="nvSample5" PaneDisplayMode="Left" OpenPaneLength="256"
-                           IsSettingsVisible="False"
-                           MenuItemsSource="{Binding Categories}"
-                           Content="{Binding NavigationService.CurrentView}"
-                           SelectedItem="{Binding SelectedCategory}"
-                           >
-            <ui:NavigationView.MenuItemTemplateSelector>
-                <!-- 
-                    If you need to bind to multiple different containers,
-				    like including separators, you'll need to use a DataTemplateSelector
-                    -->
-                <vm:MenuItemTemplateSelector>
-                    <!-- 
-						Default DataTemplate
-						Our binded collection has 4 items and a Separator. This template
-						will apply to all items, the separator was defined in the 
-						MenuItemTemplateSelector
-						-->
-                    <!-- <TreeDataTemplate> -->
-                    <!--      -->
-                    <!-- </TreeDataTemplate> -->
+        <ui:NavigationView  x:Name="NavigationViewMain" PaneDisplayMode="Left" OpenPaneLength="256" 
+                           Content="{Binding NavigationService.CurrentView}">
+                <ui:NavigationView.MenuItems>
+                    <ui:NavigationViewItem Content="Home" Tag="Home"
+                                           IconSource="Home"/>
+                    <ui:NavigationViewItemSeparator/>
+                    <ui:NavigationViewItem Content="Dashboard" Tag="Dashboard"
+                                           IconSource="ViewAll"/>
+                
+                    <ui:NavigationViewItem Content="Sales and Payments" SelectsOnInvoked="False"
+                                           IconSource="{StaticResource PaymentCardIcon}">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Estimates" Tag="Estimates"/>
+                            <ui:NavigationViewItem Content="Invoices" Tag="Inovices"/>
+                            <ui:NavigationViewItem Content="Clients" Tag="Clients"/>
+                            <ui:NavigationViewItem Content="Inventory" Tag="Inventory"/>
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                
+                    <ui:NavigationViewItem Content="Purchases" SelectsOnInvoked="False"
+                                           IconSource="{StaticResource ShoppingCartIcon}">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Bills"/>
+                            <ui:NavigationViewItem Content="Vendors"/>
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                
+                    <ui:NavigationViewItem Content="Accounting" IconSource="Library" SelectsOnInvoked="False">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Transactions"/>
+                            <ui:NavigationViewItem Content="Chart of Accounts"/>
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                
+                    <ui:NavigationViewItem Content="Payroll" IconSource="People" SelectsOnInvoked="False">
+                        <ui:NavigationViewItem.MenuItems>
+                            <ui:NavigationViewItem Content="Employees"/>
+                            <ui:NavigationViewItem Content="Timesheets"/>
+                            <ui:NavigationViewItem Content="Tax Forms"/>
+                        </ui:NavigationViewItem.MenuItems>
+                    </ui:NavigationViewItem>
+                
+                    <ui:NavigationViewItem Content="Reports"
+                                           IconSource="{StaticResource ReportDocumentIcon}"/>
                     
-                    <DataTemplate DataType="{x:Type vm:Category}">
-                        <ui:NavigationViewItem Content="{Binding Name}" IconSource="{Binding Icon}" ToolTip.Tip="{Binding ToolTip}" />
-                    </DataTemplate>
-
-                    <vm:MenuItemTemplateSelector.SeparatorTemplate>
-                        <DataTemplate DataType="{x:Type vm:Separator}">
-                            <ui:NavigationViewItemSeparator />
-                        </DataTemplate>
-                    </vm:MenuItemTemplateSelector.SeparatorTemplate>
-                </vm:MenuItemTemplateSelector>
-            </ui:NavigationView.MenuItemTemplateSelector>               
-            
-            <!-- <ui:NavigationView.MenuItems> -->
-            <!--     <ui:NavigationViewItem Content="Smth" IconSource="ViewAll" Tag=""/> -->
-            <!-- </ui:NavigationView.MenuItems> -->
-        </ui:NavigationView>
-
+                </ui:NavigationView.MenuItems>
+                
+                <ui:NavigationView.FooterMenuItems>
+                    <ui:NavigationViewItem Content="Material Library"
+                                           IconSource="{StaticResource ConstructionIcon}"/>
+                    
+                </ui:NavigationView.FooterMenuItems>
+            </ui:NavigationView>
+    <!-- </Grid> -->
+    
 </Window>

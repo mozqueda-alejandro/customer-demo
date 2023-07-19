@@ -29,6 +29,7 @@ public partial class App : Application
         });
         
         services.AddSingleton<HomeViewModel>();
+        services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<ClientsViewModel>();
         services.AddSingleton<NewClientViewModel>();
         services.AddSingleton<SettingsViewModel>();
