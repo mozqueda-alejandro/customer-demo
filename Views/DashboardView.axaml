@@ -6,6 +6,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="CustomerDemo.Views.DashboardView"
              x:DataType="vm:DashboardViewModel">
+    <Design.DataContext>
+        <vm:DashboardViewModel/>
+    </Design.DataContext>
+    
     <TextBlock TextAlignment="Center" VerticalAlignment="Center" 
                Text="{Binding Title}" />
 </UserControl>

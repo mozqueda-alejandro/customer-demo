@@ -21,12 +21,12 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
+        
+        services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
+            viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
 
         services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<MainWindow>(provider => new MainWindow
-        {
-            DataContext = provider.GetRequiredService<MainWindowViewModel>()
-        });
+        services.AddSingleton<MainWindow>();
         
         services.AddSingleton<HomeViewModel>();
         services.AddSingleton<DashboardViewModel>();
@@ -34,11 +34,8 @@ public partial class App : Application
         services.AddSingleton<NewClientViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<INavigationService, NavigationService>();
+
         services.AddSingleton<IMyDependency, MyDependency>();
-
-        services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
-            viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
-
         _serviceProvider = services.BuildServiceProvider();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

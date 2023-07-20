@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CustomerDemo.ViewModels;
 
@@ -7,7 +8,10 @@ namespace CustomerDemo.Services;
 public partial class NavigationService : ObservableObject, INavigationService
 {
     [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CurrentViewName))]
     private ViewModelBase? _currentView;
+
+    public string CurrentViewName => CurrentView!.GetType().Name;
 
     private readonly Func<Type, ViewModelBase> _viewModelFactory;
 

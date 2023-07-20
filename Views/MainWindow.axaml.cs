@@ -7,52 +7,60 @@ using Avalonia.Media.Immutable;
 using Avalonia.Styling;
 using FluentAvalonia.UI.Windowing;
 using System;
+using System.Collections.Generic;
+using System.Windows.Input;
+using Avalonia.Interactivity;
+using CommunityToolkit.Mvvm.Input;
 using CustomerDemo.ViewModels;
 using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CustomerDemo.Views;
 
 public partial class MainWindow : AppWindow
 {
+    // NavigationView SelectionChanged event handler
+
+
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    public MainWindow(MainWindowViewModel mainWindowViewModel)
+    {
+        DataContext = mainWindowViewModel;
+        InitializeComponent();
+        
 #if DEBUG
         this.AttachDevTools();
 #endif
+        
         var nv = this.FindControl<NavigationView>("NavigationViewMain");
-        nv.SelectionChanged += OnMenuItemChanged;
-        nv.SelectedItem = nv.MenuItems.ElementAt(0);
+        nv!.SelectionChanged += OnMenuItemChanged;
+        nv.SelectedItem = nv.MenuItems[0];
+        var nvip = this.FindControl<NavigationViewItem>("SalesView");
+        nvip.IsExpanded = true;
+        var nvi = this.FindControl<NavigationViewItem>("ClientsView");
+        nv.SelectedItem = nvi;
     }
-    
-    private void OnMenuItemChanged(object sender, NavigationViewSelectionChangedEventArgs e)
+
+    private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
     {
-        var vm = this.DataContext as MainWindowViewModel;
-        if (sender == null) throw new ArgumentNullException(nameof(sender));
+        if (DataContext is not MainWindowViewModel vm) return;
         
         if (e.IsSettingsSelected)
         {
-            vm!.NavigateToSettingsCommand.Execute(null);
+            vm.NavigateToSettingsCommand.Execute(null); 
         }
-        else if (e.SelectedItem is NavigationViewItem nvi)
+        else if (e.SelectedItem is NavigationViewItem navigationViewItem)
         {
-            switch (nvi.Tag)
+            var navigationName = navigationViewItem.Name;
+            ArgumentNullException.ThrowIfNull(navigationName, nameof(navigationViewItem.Name));
+            if (vm.NavigationCommands!.TryGetValue(navigationName, out IRelayCommand? navigationCommand))
             {
-                case "Home":
-                    vm?.NavigateToHomeCommand.Execute(null);
-                    break;
-                case "Dashboard":
-                    vm?.NavigateToDashboardCommand.Execute(null);
-                    break;
-                case "Clients":
-                    vm?.NavigateToClientsCommand.Execute(null);
-                    break;
-                case "Settings":
-                    vm?.NavigateToSettingsCommand.Execute(null);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                navigationCommand.Execute(null);
             }
         }
     }
@@ -61,19 +69,8 @@ public partial class MainWindow : AppWindow
     {
         var mw = this.FindControl<Window>("MainWindowControl");
         mw?.Focus();
+        
+        var nv = this.FindControl<NavigationView>("NavigationViewMain");
+        
     }
 }
-
-#region FluentAvalonia NavigationView code
-public abstract class CategoryBase { }
-
-public class Separator : CategoryBase { }
-
-public class Category : CategoryBase
-{
-    public string Name { get; set; }
-    public string ToolTip { get; set; }
-    public Symbol Icon { get; set; }
-}
-
-#endregion

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Metadata;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -11,32 +12,24 @@ namespace CustomerDemo.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    public Dictionary<string, IRelayCommand>? NavigationCommands { get; set; }
+
     [ObservableProperty]
     private INavigationService? _navigationService;
 
-    [ObservableProperty]
-    private object? _selectedCategory;
-    partial void OnSelectedCategoryChanged(object? placeholder)
-    {
-        SetCurrentPage();
-    }
-
-    [ObservableProperty]
-    private Control? _currentPage;
-    
-    
     #region NavigationService
     [RelayCommand]
     private void NavigateToHome() => NavigationService?.NavigateTo<HomeViewModel>();
     
     [RelayCommand]
     private void NavigateToDashboard() => NavigationService?.NavigateTo<DashboardViewModel>();
-    
-    [RelayCommand]
-    private void NavigateToSettings() => NavigationService?.NavigateTo<SettingsViewModel>();
 
     [RelayCommand]
     private void NavigateToClients() => NavigationService?.NavigateTo<ClientsViewModel>();
+
+    [RelayCommand]
+    private void NavigateToSettings() => NavigationService?.NavigateTo<SettingsViewModel>();
+
     #endregion
 
     public MainWindowViewModel() { }
@@ -44,17 +37,11 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
-    }
-    
-    private void SetCurrentPage()
-    {
-        if (SelectedCategory is Category cat)
-        {
-            
-        }
-        else if (SelectedCategory is NavigationViewItem nvi)
-        {
-            NavigateToSettings();
-        }
+        NavigationCommands = new Dictionary<string, IRelayCommand>
+            {
+                { nameof(HomeView), NavigateToHomeCommand },
+                { nameof(DashboardView), NavigateToDashboardCommand },
+                { nameof(ClientsView), NavigateToClientsCommand }
+            };
     }
 }
