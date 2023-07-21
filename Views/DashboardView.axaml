@@ -9,7 +9,11 @@
     <Design.DataContext>
         <vm:DashboardViewModel/>
     </Design.DataContext>
+    <StackPanel>
+        <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="0,48,0,0"
+                   Text="{Binding Title}" />
+        <Button Content="Clients" HorizontalAlignment="Center"
+                Command="{Binding NavigateToClientsCommand}"/>
+    </StackPanel>
     
-    <TextBlock TextAlignment="Center" VerticalAlignment="Center" 
-               Text="{Binding Title}" />
 </UserControl>

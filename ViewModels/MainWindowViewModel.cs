@@ -30,7 +30,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     [RelayCommand]
     private void NavigateToSettings() => NavigationService?.NavigateTo<SettingsViewModel>();
-
     #endregion
 
     public MainWindowViewModel() { }

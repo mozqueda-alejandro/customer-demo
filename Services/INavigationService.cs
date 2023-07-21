@@ -7,10 +7,7 @@ namespace CustomerDemo.Services;
 public interface INavigationService
 {
     string CurrentViewName { get; }
-    
-    public event PropertyChangedEventHandler PropertyChanged;
-    
     ViewModelBase CurrentView { get; }
-    
+    public event PropertyChangedEventHandler PropertyChanged;
     void NavigateTo<T>() where T : ViewModelBase;
 }

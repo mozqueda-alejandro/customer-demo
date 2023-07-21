@@ -27,7 +27,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <!-- <Grid ColumnDefinitions="Auto,*"> -->
-        <ui:NavigationView x:Name="NavigationViewMain" PaneDisplayMode="Left" OpenPaneLength="256" 
+        <ui:NavigationView x:Name="NavigationView" PaneDisplayMode="Left" OpenPaneLength="264" 
                            Content="{Binding NavigationService.CurrentView}"
                            IsSettingsVisible="False">
             <ui:NavigationView.MenuItems>

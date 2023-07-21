@@ -11,8 +11,8 @@ public partial class NavigationService : ObservableObject, INavigationService
     [ObservableProperty]
     [NotifyPropertyChangedFor(nameof(CurrentViewName))]
     private ViewModelBase? _currentView;
-
-    public string CurrentViewName => (CurrentView?.GetType().Name)!.Replace("Model","") ?? string.Empty;
+    
+    public string CurrentViewName => CurrentView!.GetType().Name.Replace("ViewModel", "View");
 
     private readonly Func<Type, ViewModelBase> _viewModelFactory;
 

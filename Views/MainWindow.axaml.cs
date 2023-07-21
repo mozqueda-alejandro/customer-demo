@@ -31,20 +31,21 @@ public partial class MainWindow : AppWindow
 {
     private readonly MainWindowViewModel _viewModel;
     private Dictionary<string, object> NavigationItems { get; set; } = new();
-    private NavigationView NavigationViewControl { get; set; }
+    private NavigationView? _navigationView;
     public MainWindow() => InitializeComponent();
 
     public MainWindow(MainWindowViewModel viewModel)
     {
-        _viewModel = viewModel;
-        DataContext = _viewModel;
         InitializeComponent();
 #if DEBUG
         this.AttachDevTools();
 #endif
-        InitializeNavigation();
-         
         
+        _viewModel = viewModel;
+        _navigationView = this.FindControl<NavigationView>("NavigationView");
+        DataContext = _viewModel;
+        InitializeNavigation();
+
         // var nv = this.FindControl<NavigationView>("NavigationViewMain");
         // // var nvip = this.FindControl<NavigationViewItem>("SalesView");
         // var nvi = this.FindControl<NavigationViewItem>("ClientsView");
@@ -55,13 +56,13 @@ public partial class MainWindow : AppWindow
 
     private void InitializeNavigation()
     {
-        var nv = this.FindControl<NavigationView>("NavigationViewMain");
-        nv!.SelectionChanged += OnMenuItemChanged;
-        nv.SelectedItem = nv.MenuItems[0];
+        _navigationView!.SelectionChanged += OnMenuItemChanged;
+        _navigationView.SelectedItem = _navigationView.MenuItems[0];
         
-        foreach (var menuItem in nv.MenuItems)
+        foreach (var menuItem in _navigationView.MenuItems)
         {
             if (menuItem is not NavigationViewItem navigationViewItem) continue;
+            
             if (navigationViewItem.MenuItems.Count == 0)
             {
                 NavigationItems.Add(navigationViewItem.Name!, navigationViewItem);
@@ -75,19 +76,21 @@ public partial class MainWindow : AppWindow
             }
         }
 
-        NavigationItems.Add(((NavigationViewItem)nv.FooterMenuItems[0]).Name!, nv.FooterMenuItems[0]);
-        NavigationItems.Add(((NavigationViewItem)nv.FooterMenuItems[1]).Name!, nv.FooterMenuItems[1]);
+        foreach (var footerItem in _navigationView.FooterMenuItems)
+        {
+            NavigationItems.Add(((NavigationViewItem)footerItem).Name!, footerItem);
+        }
 
         _viewModel.NavigationService!.PropertyChanged += OnCurrentViewChanged;
     }
 
     private void OnCurrentViewChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName != nameof(_viewModel.NavigationService.CurrentView)) return;
         if (sender is not INavigationService navigationService) return;
-        var nv = this.FindControl<NavigationView>("NavigationViewMain");
-        var selectedItem = nv!.SelectedItem! as NavigationViewItem;
-        if (navigationService.CurrentViewName == selectedItem!.Name) return;
+        if (e.PropertyName != nameof(navigationService.CurrentViewName)) return;
+        
+        var selectedItem = _navigationView!.SelectedItem as NavigationViewItem;
+        if (selectedItem!.Name == navigationService.CurrentViewName) return;
         
         if (!NavigationItems.TryGetValue(navigationService.CurrentViewName, out var navigationViewItem)) return;
         if (navigationViewItem is NavigationViewItem nvi)
@@ -98,14 +101,13 @@ public partial class MainWindow : AppWindow
 
     private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
     {
-        if (e.SelectedItem is not NavigationViewItem navigationViewItem) return;
-        var viewItemName = navigationViewItem.Name;
+        if (e.SelectedItem is not NavigationViewItem selectedItem) return;
         if (_viewModel.NavigationService?.CurrentView != null)
         {
-            if (viewItemName == _viewModel.NavigationService?.CurrentViewName) return;
+            if (selectedItem.Name == _viewModel.NavigationService?.CurrentViewName) return;
         }
 
-        if (_viewModel.NavigationCommands!.TryGetValue(viewItemName!, out IRelayCommand? navigationCommand))
+        if (_viewModel.NavigationCommands!.TryGetValue(selectedItem.Name!, out IRelayCommand? navigationCommand))
         {
             navigationCommand.Execute(null);
         }
