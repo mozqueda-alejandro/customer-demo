@@ -13,12 +13,10 @@ namespace CustomerDemo.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    public Dictionary<string, IRelayCommand>? NavigationCommands { get; set; }
-
-    [ObservableProperty]
-    private INavigationService? _navigationService;
-
     #region NavigationService
+    [ObservableProperty]
+        private INavigationService _navigationService;
+    
     [RelayCommand]
     private void NavigateToHome() => NavigationService?.NavigateTo<HomeViewModel>();
     
@@ -37,12 +35,6 @@ public partial class MainWindowViewModel : ViewModelBase
     public MainWindowViewModel(INavigationService navigationService)
     {
         NavigationService = navigationService;
-        NavigationCommands = new Dictionary<string, IRelayCommand>
-        {
-            { nameof(HomeView), NavigateToHomeCommand },
-            { nameof(DashboardView), NavigateToDashboardCommand },
-            { nameof(ClientsView), NavigateToClientsCommand },
-            { nameof(SettingsView), NavigateToSettingsCommand }
-        };
+        
     }
 }

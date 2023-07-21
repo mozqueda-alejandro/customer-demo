@@ -30,8 +30,11 @@ public class MenuItemContainer
 public partial class MainWindow : AppWindow
 {
     private readonly MainWindowViewModel _viewModel;
-    private Dictionary<string, object> NavigationItems { get; set; } = new();
-    private NavigationView? _navigationView;
+    private readonly NavigationView _navigationView;
+
+    private Dictionary<string, object> NavigationItems { get; } = new();
+    private Dictionary<string, IRelayCommand> NavigationCommands { get; }
+    
     public MainWindow() => InitializeComponent();
 
     public MainWindow(MainWindowViewModel viewModel)
@@ -42,23 +45,29 @@ public partial class MainWindow : AppWindow
 #endif
         
         _viewModel = viewModel;
-        _navigationView = this.FindControl<NavigationView>("NavigationView");
+        _navigationView = this.FindControl<NavigationView>("NavigationView")!;
         DataContext = _viewModel;
-        InitializeNavigation();
-
+        
         // var nv = this.FindControl<NavigationView>("NavigationViewMain");
         // // var nvip = this.FindControl<NavigationViewItem>("SalesView");
         // var nvi = this.FindControl<NavigationViewItem>("ClientsView");
         // nv!.SelectedItem = nvi;
         // NavigationViewItem nvip = (NavigationViewItem)nvi?.Parent;
         // nvip!.IsExpanded = true;
+        
+        NavigationCommands = new Dictionary<string, IRelayCommand>
+        {
+            { nameof(HomeView), _viewModel.NavigateToHomeCommand },
+            { nameof(DashboardView), _viewModel.NavigateToDashboardCommand },
+            { nameof(ClientsView), _viewModel.NavigateToClientsCommand },
+            { nameof(SettingsView), _viewModel.NavigateToSettingsCommand }
+        };
+        
+        InitializeNavigation();
     }
 
     private void InitializeNavigation()
     {
-        _navigationView!.SelectionChanged += OnMenuItemChanged;
-        _navigationView.SelectedItem = _navigationView.MenuItems[0];
-        
         foreach (var menuItem in _navigationView.MenuItems)
         {
             if (menuItem is not NavigationViewItem navigationViewItem) continue;
@@ -81,7 +90,23 @@ public partial class MainWindow : AppWindow
             NavigationItems.Add(((NavigationViewItem)footerItem).Name!, footerItem);
         }
 
-        _viewModel.NavigationService!.PropertyChanged += OnCurrentViewChanged;
+        _navigationView.SelectionChanged += OnMenuItemChanged;
+        _viewModel.NavigationService.PropertyChanged += OnCurrentViewChanged;
+        _navigationView.SelectedItem = _navigationView.MenuItems[0];
+    }
+
+    private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
+    {
+        if (e.SelectedItem is not NavigationViewItem selectedItem) return;
+        if (_viewModel.NavigationService.CurrentView != null)
+        {
+            if (selectedItem.Name == _viewModel.NavigationService.CurrentViewName) return; // Prevents view from being reselected
+        }
+
+        if (NavigationCommands.TryGetValue(selectedItem.Name!, out IRelayCommand? navigationCommand))
+        {
+            navigationCommand.Execute(null);
+        }
     }
 
     private void OnCurrentViewChanged(object? sender, PropertyChangedEventArgs e)
@@ -89,27 +114,13 @@ public partial class MainWindow : AppWindow
         if (sender is not INavigationService navigationService) return;
         if (e.PropertyName != nameof(navigationService.CurrentViewName)) return;
         
-        var selectedItem = _navigationView!.SelectedItem as NavigationViewItem;
-        if (selectedItem!.Name == navigationService.CurrentViewName) return;
+        var prevSelection = _navigationView.SelectedItem as NavigationViewItem;
+        if (prevSelection!.Name == navigationService.CurrentViewName) return; // Prevents item from being reselected
         
         if (!NavigationItems.TryGetValue(navigationService.CurrentViewName, out var navigationViewItem)) return;
-        if (navigationViewItem is NavigationViewItem nvi)
+        if (navigationViewItem is NavigationViewItem newSelection)
         {
-            nvi.IsSelected = true;
-        }
-    }
-
-    private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
-    {
-        if (e.SelectedItem is not NavigationViewItem selectedItem) return;
-        if (_viewModel.NavigationService?.CurrentView != null)
-        {
-            if (selectedItem.Name == _viewModel.NavigationService?.CurrentViewName) return;
-        }
-
-        if (_viewModel.NavigationCommands!.TryGetValue(selectedItem.Name!, out IRelayCommand? navigationCommand))
-        {
-            navigationCommand.Execute(null);
+            newSelection.IsSelected = true;
         }
     }
 
