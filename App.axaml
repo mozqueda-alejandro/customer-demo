@@ -3,10 +3,7 @@
              xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
              xmlns:views="clr-namespace:CustomerDemo.Views"
              x:Class="CustomerDemo.App"
-             xmlns:sty="using:FluentAvalonia.Styling"
-             xmlns:ui="using:FluentAvalonia.UI.Controls"
-             xmlns:uip="using:FluentAvalonia.UI.Controls.Primitives"
-             >
+             xmlns:sty="using:FluentAvalonia.Styling">
 
     <Application.Styles>
         <!-- <FluentTheme Mode="Dark"/> -->

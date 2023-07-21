@@ -29,7 +29,7 @@
     <!-- <Grid ColumnDefinitions="Auto,*"> -->
         <ui:NavigationView x:Name="NavigationViewMain" PaneDisplayMode="Left" OpenPaneLength="256" 
                            Content="{Binding NavigationService.CurrentView}"
-                           >
+                           IsSettingsVisible="False">
             <ui:NavigationView.MenuItems>
                 <!-- x:Name attributes must be in the form "UserControlView" -->
                 <ui:NavigationViewItem x:Name="HomeView" Content="Home"
@@ -65,7 +65,7 @@
             
                 <ui:NavigationViewItem Content="Payroll" IconSource="People" SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem Content="Employees" />
+                        <ui:NavigationViewItem x:Name="EmployeesView" Content="Employees" />
                         <ui:NavigationViewItem x:Name="TimesheetsView" Content="Timesheets"/>
                         <ui:NavigationViewItem x:Name="TaxFormsView" Content="Tax Forms"/>
                     </ui:NavigationViewItem.MenuItems>
@@ -73,15 +73,14 @@
             
                 <ui:NavigationViewItem x:Name="ReportsView" Content="Reports"
                                        IconSource="{StaticResource ReportDocumentIcon}"/>
-                
             </ui:NavigationView.MenuItems>
             
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItem x:Name="MaterialLibraryView" Content="Material Library"
                                        IconSource="{StaticResource ConstructionIcon}"/>
-                
+                <ui:NavigationViewItem x:Name="SettingsView" Content="Settings"
+                                       IconSource="Settings"/>
             </ui:NavigationView.FooterMenuItems>
-                
         </ui:NavigationView>
     <!-- </Grid> -->
     

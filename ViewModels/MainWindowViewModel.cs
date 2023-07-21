@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using Avalonia.Controls;
 using Avalonia.Metadata;
@@ -38,10 +39,11 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         NavigationService = navigationService;
         NavigationCommands = new Dictionary<string, IRelayCommand>
-            {
-                { nameof(HomeView), NavigateToHomeCommand },
-                { nameof(DashboardView), NavigateToDashboardCommand },
-                { nameof(ClientsView), NavigateToClientsCommand }
-            };
+        {
+            { nameof(HomeView), NavigateToHomeCommand },
+            { nameof(DashboardView), NavigateToDashboardCommand },
+            { nameof(ClientsView), NavigateToClientsCommand },
+            { nameof(SettingsView), NavigateToSettingsCommand }
+        };
     }
 }
