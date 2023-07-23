@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="using:CustomerDemo.ViewModels"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="CustomerDemo.Views.EstimatesView"
+             x:DataType="vm:EstimatesViewModel">
+    <Design.DataContext> 
+        <vm:EstimatesViewModel/>
+    </Design.DataContext>
+    
+    <StackPanel Margin="0,150,0,0">
+        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button Content="Home" Command="{Binding NavigateToHomeCommand}"
+                HorizontalAlignment="Center"
+                Margin="0,16,0,0"/>
+        <Button Content="Clients" Command="{Binding NavigateToClientsCommand}"
+                HorizontalAlignment="Center"
+                Margin="0,16,0,0"/>
+        <Button Content="Vendors" Command="{Binding NavigateToVendorsCommand}"
+                HorizontalAlignment="Center"
+                Margin="0,16,0,0"/>
+    </StackPanel>
+    
+</UserControl>

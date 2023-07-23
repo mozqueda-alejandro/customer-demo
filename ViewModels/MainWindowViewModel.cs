@@ -13,21 +13,30 @@ namespace CustomerDemo.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
+    [ObservableProperty]
+    private string _title = "Binding from MainWindowViewModel";
+
     #region NavigationService
     [ObservableProperty]
-        private INavigationService _navigationService;
+    private INavigationService _navigationService;
     
     [RelayCommand]
-    private void NavigateToHome() => NavigationService?.NavigateTo<HomeViewModel>();
+    private void NavigateToHome() => NavigationService.NavigateTo<HomeViewModel>();
     
     [RelayCommand]
-    private void NavigateToDashboard() => NavigationService?.NavigateTo<DashboardViewModel>();
+    private void NavigateToDashboard() => NavigationService.NavigateTo<DashboardViewModel>();
+    
+    [RelayCommand]
+    private void NavigateToEstimates() => NavigationService.NavigateTo<EstimatesViewModel>();
 
     [RelayCommand]
-    private void NavigateToClients() => NavigationService?.NavigateTo<ClientsViewModel>();
+    private void NavigateToClients() => NavigationService.NavigateTo<ClientsViewModel>();
+    
+    [RelayCommand]
+    private void NavigateToVendors() => NavigationService.NavigateTo<VendorsViewModel>();
 
     [RelayCommand]
-    private void NavigateToSettings() => NavigationService?.NavigateTo<SettingsViewModel>();
+    private void NavigateToSettings() => NavigationService.NavigateTo<SettingsViewModel>();
     #endregion
 
     public MainWindowViewModel() { }

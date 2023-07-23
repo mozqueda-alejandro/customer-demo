@@ -8,7 +8,7 @@
         x:Class="CustomerDemo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/cimental-masonry-logo.ico"
-        Title="Cimental Masonry Demo"
+        Title="{Binding Title}"
         x:Name="MainWindowControl"
         Focusable="True"
         PointerPressed="MainWindow_OnPointerPressed">
@@ -29,7 +29,8 @@
     
     <ui:NavigationView x:Name="NavigationView" PaneDisplayMode="Left" OpenPaneLength="264" 
                        Content="{Binding NavigationService.CurrentView}"
-                       IsSettingsVisible="False">
+                       IsSettingsVisible="False"
+                       >
         <ui:NavigationView.MenuItems>
             <!-- x:Name attributes must be in the form "UserControlView" -->
             <ui:NavigationViewItem x:Name="HomeView" Content="Home"
@@ -38,7 +39,7 @@
             <ui:NavigationViewItem x:Name="DashboardView" Content="Dashboard"
                                    IconSource="ViewAll"/>
         
-            <ui:NavigationViewItem x:Name="SalesView" Content="Sales and Payments" SelectsOnInvoked="False"
+            <ui:NavigationViewItem x:Name="Sales" Content="Sales and Payments" SelectsOnInvoked="False"
                                    IconSource="{StaticResource PaymentCardIcon}">
                 <ui:NavigationViewItem.MenuItems>
                     <ui:NavigationViewItem x:Name="EstimatesView" Content="Estimates"/>
@@ -48,7 +49,7 @@
                 </ui:NavigationViewItem.MenuItems>
             </ui:NavigationViewItem>
         
-            <ui:NavigationViewItem Content="Purchases" SelectsOnInvoked="False" 
+            <ui:NavigationViewItem x:Name="Purchases" Content="Purchases" SelectsOnInvoked="False" 
                                    IconSource="{StaticResource ShoppingCartIcon}">
                 <ui:NavigationViewItem.MenuItems>
                     <ui:NavigationViewItem x:Name="BillsView" Content="Bills"/>
@@ -56,14 +57,14 @@
                 </ui:NavigationViewItem.MenuItems>
             </ui:NavigationViewItem>
         
-            <ui:NavigationViewItem Content="Accounting" IconSource="Library" SelectsOnInvoked="False">
+            <ui:NavigationViewItem x:Name="Accounting" Content="Accounting" IconSource="Library" SelectsOnInvoked="False">
                 <ui:NavigationViewItem.MenuItems>
                     <ui:NavigationViewItem x:Name="TransactionsView" Content="Transactions"/>
                     <ui:NavigationViewItem x:Name="ChartOfAccountsView" Content="Chart of Accounts"/>
                 </ui:NavigationViewItem.MenuItems>
             </ui:NavigationViewItem>
         
-            <ui:NavigationViewItem Content="Payroll" IconSource="People" SelectsOnInvoked="False">
+            <ui:NavigationViewItem x:Name="Payroll" Content="Payroll" IconSource="People" SelectsOnInvoked="False">
                 <ui:NavigationViewItem.MenuItems>
                     <ui:NavigationViewItem x:Name="EmployeesView" Content="Employees" />
                     <ui:NavigationViewItem x:Name="TimesheetsView" Content="Timesheets"/>

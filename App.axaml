@@ -3,12 +3,23 @@
              xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
              xmlns:views="clr-namespace:CustomerDemo.Views"
              x:Class="CustomerDemo.App"
-             xmlns:sty="using:FluentAvalonia.Styling">
+             xmlns:sty="using:FluentAvalonia.Styling"
+             xmlns:customerDemo="clr-namespace:CustomerDemo">
 
     <Application.Styles>
         <!-- <FluentTheme Mode="Dark"/> -->
         <sty:FluentAvaloniaTheme/>
     </Application.Styles>
+    
+    <Application.Resources>
+        <Color x:Key="SystemAccentColor">#AA2930</Color>
+        <Color x:Key="SystemAccentColorLight1">#D44B52</Color>
+        <Color x:Key="SystemAccentColorLight2">#E66B70</Color>
+        <Color x:Key="SystemAccentColorLight3">#F88C8F</Color>
+        <Color x:Key="SystemAccentColorDark1">#67171C</Color>
+        <Color x:Key="SystemAccentColorDark2">#7B1A20</Color>
+        <Color x:Key="SystemAccentColorDark3">#8F1D24</Color>
+    </Application.Resources>
     
     <Application.DataTemplates>
         
@@ -19,9 +30,9 @@
         <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
             <views:DashboardView/>
         </DataTemplate>
-        
-        <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
-            <views:SettingsView/>
+       
+        <DataTemplate DataType="{x:Type viewModels:EstimatesViewModel}">
+            <views:EstimatesView/>
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type viewModels:ClientsViewModel}">
@@ -30,6 +41,14 @@
         
         <DataTemplate DataType="{x:Type viewModels:NewClientViewModel}">
             <views:NewClientView/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:VendorsViewModel}">
+            <views:VendorsView/>
+        </DataTemplate>
+         
+        <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
+            <views:SettingsView/>
         </DataTemplate>
         
         <!-- Display Fluent icons -->

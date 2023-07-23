@@ -34,4 +34,8 @@
     <ItemGroup>
       <Compile Remove="Views\test.axaml.cs" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\JobScopeViews\" />
+    </ItemGroup>
 </Project>

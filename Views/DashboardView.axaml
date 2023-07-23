@@ -12,8 +12,15 @@
     <StackPanel>
         <TextBlock TextAlignment="Center" VerticalAlignment="Center" Margin="0,48,0,0"
                    Text="{Binding Title}" />
+        <Button Content="Estimates" HorizontalAlignment="Center"
+                Command="{Binding NavigateToEstimatesCommand}"
+                Margin="0,16,0,0"/>
         <Button Content="Clients" HorizontalAlignment="Center"
-                Command="{Binding NavigateToClientsCommand}"/>
+                Command="{Binding NavigateToClientsCommand}"
+                Margin="0,16,0,0"/>
+        <Button Content="Vendors" HorizontalAlignment="Center"
+                Command="{Binding NavigateToVendorsCommand}"
+                Margin="0,16,0,0"/>
     </StackPanel>
     
 </UserControl>

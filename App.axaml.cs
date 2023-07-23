@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -18,7 +19,7 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    public override async void OnFrameworkInitializationCompleted()
     {
         var services = new ServiceCollection();
         
@@ -30,8 +31,10 @@ public partial class App : Application
         
         services.AddSingleton<HomeViewModel>();
         services.AddSingleton<DashboardViewModel>();
+        services.AddSingleton<EstimatesViewModel>();
         services.AddSingleton<ClientsViewModel>();
         services.AddSingleton<NewClientViewModel>();
+        services.AddSingleton<VendorsViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddSingleton<INavigationService, NavigationService>();
 
@@ -41,6 +44,9 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            await Task.Delay(1);
+            ((MainWindow)desktop.MainWindow).Title = "Customer Demo";
+            ((MainWindow)desktop.MainWindow).SetMenuItemExpansion(false);
         }
 
         base.OnFrameworkInitializationCompleted();

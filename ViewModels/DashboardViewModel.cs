@@ -13,7 +13,13 @@ public partial class DashboardViewModel : ViewModelBase
     private INavigationService? _navigationService;
     
     [RelayCommand]
+    private void NavigateToEstimates() => NavigationService?.NavigateTo<EstimatesViewModel>();
+    
+    [RelayCommand]
     private void NavigateToClients() => NavigationService?.NavigateTo<ClientsViewModel>();
+    
+    [RelayCommand]
+    private void NavigateToVendors() => NavigationService?.NavigateTo<VendorsViewModel>();
 
     public DashboardViewModel() { }
     
