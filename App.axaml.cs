@@ -23,12 +23,9 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
         
-        services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
-            viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
-
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<MainWindow>();
-        
+
         services.AddSingleton<HomeViewModel>();
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<EstimatesViewModel>();
@@ -36,17 +33,21 @@ public partial class App : Application
         services.AddSingleton<NewClientViewModel>();
         services.AddSingleton<VendorsViewModel>();
         services.AddSingleton<SettingsViewModel>();
+        
         services.AddSingleton<INavigationService, NavigationService>();
-
         services.AddSingleton<IMyDependency, MyDependency>();
+        
+        services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
+            viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
+
         _serviceProvider = services.BuildServiceProvider();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            desktop.MainWindow = mainWindow;
             await Task.Delay(1);
-            ((MainWindow)desktop.MainWindow).Title = "Customer Demo";
-            ((MainWindow)desktop.MainWindow).SetMenuItemExpansion(false);
+            mainWindow.SetMenuItemExpansion(false);
         }
 
         base.OnFrameworkInitializationCompleted();

@@ -8,7 +8,9 @@
         x:Class="CustomerDemo.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/cimental-masonry-logo.ico"
-        Title="{Binding Title}"
+        Title="Customer Demo"
+        WindowStartupLocation="CenterScreen"
+        
         x:Name="MainWindowControl"
         Focusable="True"
         PointerPressed="MainWindow_OnPointerPressed">
@@ -27,10 +29,9 @@
         </ResourceDictionary>
     </Window.Resources>
     
-    <ui:NavigationView x:Name="NavigationView" PaneDisplayMode="Left" OpenPaneLength="264" 
+    <ui:NavigationView x:Name="NavigationViewControl" PaneDisplayMode="Left" OpenPaneLength="264" 
                        Content="{Binding NavigationService.CurrentView}"
-                       IsSettingsVisible="False"
-                       >
+                       IsSettingsVisible="False">
         <ui:NavigationView.MenuItems>
             <!-- x:Name attributes must be in the form "UserControlView" -->
             <ui:NavigationViewItem x:Name="HomeView" Content="Home"

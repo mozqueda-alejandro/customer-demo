@@ -23,18 +23,25 @@ namespace CustomerDemo.Views;
 
 public class MenuItemContainer
 {
-    public NavigationViewItem? NavigationViewItem { get; set; }
-    public string ParentName { get; set; } = string.Empty;
-    public bool IsChild { get; set; }
+    public NavigationViewItem MenuItem { get; }
+    public string ParentName { get; }
+    public bool HasParent { get; }
+
+    public MenuItemContainer(NavigationViewItem menuItem, string parentName)
+    {
+        MenuItem = menuItem;
+        ParentName = parentName;
+        HasParent = !string.IsNullOrEmpty(ParentName);
+    }
 }
 
 public partial class MainWindow : AppWindow
 {
-    private readonly MainWindowViewModel _viewModel;
-    private readonly NavigationView _navigationView;
-
+    private MainWindowViewModel ViewModel { get; }
+    private NavigationView NavigationView { get; }
+    private Dictionary<string, IRelayCommand> NavigationCommands { get; } = new();
     private Dictionary<string, MenuItemContainer> NavigationItems { get; } = new();
-    private Dictionary<string, IRelayCommand> NavigationCommands { get; }
+    private HashSet<string> ParentNavigationItemNames { get; } = new();
 
     public MainWindow() => InitializeComponent();
 
@@ -45,76 +52,26 @@ public partial class MainWindow : AppWindow
         this.AttachDevTools();
 #endif
         
-        _viewModel = viewModel;
-        _navigationView = this.FindControl<NavigationView>("NavigationView")!;
-        DataContext = _viewModel;
+        ViewModel = viewModel;
+        NavigationView = this.FindControl<NavigationView>("NavigationViewControl")!;
+        DataContext = ViewModel;
 
-        NavigationCommands = new Dictionary<string, IRelayCommand>
-        {
-            { nameof(HomeView), _viewModel.NavigateToHomeCommand },
-            { nameof(DashboardView), _viewModel.NavigateToDashboardCommand },
-            { nameof(EstimatesView), _viewModel.NavigateToEstimatesCommand },
-            { nameof(ClientsView), _viewModel.NavigateToClientsCommand },
-            { nameof(VendorsView), _viewModel.NavigateToVendorsCommand },
-            { nameof(SettingsView), _viewModel.NavigateToSettingsCommand }
-        };
+        InitNavigationCommands();
+        InitNavigationItems();
         
-        InitializeNavigation();
-        
-        _navigationView.SelectedItem = _navigationView.MenuItems[0];
+        NavigationView.SelectionChanged += OnMenuItemChanged;
+        ViewModel.NavigationService.PropertyChanged += OnCurrentViewChanged;
+        NavigationView.SelectedItem = NavigationView.MenuItems.ElementAt(0);
         
         SetMenuItemExpansion(true);
-    }
-
-    private void InitializeNavigation()
-    {
-        foreach (var menuItem in _navigationView.MenuItems)
-        {
-            if (menuItem is not NavigationViewItem navigationViewItem) continue;
-            
-            if (navigationViewItem.MenuItems.Count == 0)
-            {
-                NavigationItems.Add(navigationViewItem.Name!, new MenuItemContainer
-                {
-                    NavigationViewItem = navigationViewItem,
-                    IsChild = false
-                });
-            }
-            else
-            {
-                foreach (NavigationViewItem subItem in navigationViewItem.MenuItems)
-                {
-                    NavigationItems.Add(subItem.Name!, new MenuItemContainer
-                    {
-                        NavigationViewItem = subItem,
-                        ParentName = navigationViewItem.Name!,
-                        IsChild = true
-                    });
-                }
-            }
-        }
-
-        foreach (var footerItem in _navigationView.FooterMenuItems)
-        {
-            if (footerItem is not NavigationViewItem navigationViewItem) continue;
-            NavigationItems.Add(navigationViewItem.Name!, new MenuItemContainer
-            {
-                NavigationViewItem = navigationViewItem,
-                IsChild = false
-            });
-        }
-
-        _navigationView.SelectionChanged += OnMenuItemChanged;
-        _viewModel.NavigationService.PropertyChanged += OnCurrentViewChanged;
-        // _navigationView.SelectedItem = _navigationView.MenuItems[0];
     }
 
     private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
     {
         if (e.SelectedItem is not NavigationViewItem selectedItem) return;
-        if (_viewModel.NavigationService.CurrentView != null)
+        if (ViewModel.NavigationService.CurrentView != null)
         {
-            if (selectedItem.Name == _viewModel.NavigationService.CurrentViewName) return; // Prevents view from being reselected
+            if (selectedItem.Name == ViewModel.NavigationService.CurrentViewName) return; // Prevents navigation to same view
         }
         
         if (NavigationCommands.TryGetValue(selectedItem.Name!, out var navigationCommand))
@@ -127,54 +84,88 @@ public partial class MainWindow : AppWindow
     {
         if (sender is not INavigationService navigationService) return;
         if (e.PropertyName != nameof(navigationService.CurrentViewName)) return;
-        var prevSelection = _navigationView.SelectedItem as NavigationViewItem;
-        var prevSelectionName = prevSelection?.Name;
-        var currentViewName = navigationService.CurrentViewName;
-        if (prevSelection!.Name == currentViewName) return; // Prevents item from being reselected
+        var prevSelectionName = ((NavigationViewItem)NavigationView.SelectedItem).Name;
+        if (prevSelectionName == navigationService.CurrentViewName) return; // Prevents item from being reselected
         
-        var wasPaneExpanded = _navigationView.IsPaneOpen;
-        _navigationView.IsPaneOpen = true;
-        
+        var wasPaneExpanded = NavigationView.IsPaneOpen;
+        NavigationView.IsPaneOpen = true;
         SetMenuItemExpansion(true);
 
         if (!NavigationItems.TryGetValue(navigationService.CurrentViewName, out var menuItemContainer)) return;
-        NavigationViewItem parent = new();
-        if (menuItemContainer.IsChild)
+        
+        if (menuItemContainer.HasParent)
         {
-            parent = this.FindControl<NavigationViewItem>(menuItemContainer.ParentName)!;
+            var parent = this.FindControl<NavigationViewItem>(menuItemContainer.ParentName)!;
             parent.IsChildSelected = true;
         }
-        var child = this.FindControl<NavigationViewItem>(currentViewName)!;
-        if (menuItemContainer.NavigationViewItem is { } newSelection)
-        {
-            _navigationView.SelectedItem = child;
-            child.ApplyTemplate();
-            child.IsSelected = true;
-        }
-
-
-        _navigationView.IsPaneOpen = wasPaneExpanded;
-        // Check if previous selection is a child, if so, set parent IsChildSelected to false
-        var sales = this.FindControl<NavigationViewItem>("Sales");
-        if (prevSelectionName == "EstimatesView")
-        {
-            sales.IsChildSelected = false;
-            sales.IsSelected = false;
-        }
         
+        var newSelection = menuItemContainer.MenuItem;
+        NavigationView.SelectedItem = newSelection;
+        newSelection.IsSelected = true;
+
+        // If previous selection has a parent, and if new selection's parent is not the same,
+        // set previous parent IsChildSelected to false
+        if (NavigationItems.TryGetValue(prevSelectionName!, out var prevMenuItemContainer))
+        {
+            if (prevMenuItemContainer.HasParent && prevMenuItemContainer.ParentName != menuItemContainer.ParentName)
+            {
+                var prevParent = this.FindControl<NavigationViewItem>(prevMenuItemContainer.ParentName)!;
+                prevParent.IsChildSelected = false;
+                prevParent.IsSelected = false;
+            }
+        }
+
         SetMenuItemExpansion(false);
+        NavigationView.IsPaneOpen = wasPaneExpanded;
     }
 
     public void SetMenuItemExpansion(bool isExpanded)
     {
         // Takes a bool and sets the IsExpanded property of all parent menu items to that value
-        var sales = this.FindControl<NavigationViewItem>("Sales");
-        var purchases = this.FindControl<NavigationViewItem>("Purchases");
-        sales!.IsExpanded = isExpanded;
-        purchases!.IsExpanded = isExpanded;
+        foreach (var parentName in ParentNavigationItemNames)
+        {
+            var parent = this.FindControl<NavigationViewItem>(parentName)!;
+            parent.IsExpanded = isExpanded;
+        }
+    }
+
+    private void InitNavigationCommands()
+    {
+        NavigationCommands.Add(nameof(HomeView), ViewModel.NavigateToHomeCommand);
+        NavigationCommands.Add(nameof(DashboardView), ViewModel.NavigateToDashboardCommand);
+        NavigationCommands.Add(nameof(EstimatesView), ViewModel.NavigateToEstimatesCommand);
+        NavigationCommands.Add(nameof(ClientsView), ViewModel.NavigateToClientsCommand);
+        NavigationCommands.Add(nameof(VendorsView), ViewModel.NavigateToVendorsCommand);
+        NavigationCommands.Add(nameof(SettingsView), ViewModel.NavigateToSettingsCommand);
+    }
+
+    private void InitNavigationItems()
+    {
+        foreach (var menuItem in NavigationView.MenuItems)
+        {
+            if (menuItem is not NavigationViewItem navigationViewItem) continue;
+            
+            if (navigationViewItem.MenuItems.Count == 0)
+            {
+                NavigationItems.Add(navigationViewItem.Name!, new MenuItemContainer(navigationViewItem,string.Empty));
+            }
+            else
+            {
+                foreach (NavigationViewItem subItem in navigationViewItem.MenuItems)
+                {
+                    NavigationItems.Add(subItem.Name!, new MenuItemContainer(subItem, navigationViewItem.Name!));
+                }
+                ParentNavigationItemNames.Add(navigationViewItem.Name!);
+            }
+        }
+
+        foreach (var footerItem in NavigationView.FooterMenuItems)
+        {
+            if (footerItem is not NavigationViewItem navigationViewItem) continue;
+            NavigationItems.Add(navigationViewItem.Name!, new MenuItemContainer(navigationViewItem, string.Empty));
+        }
     }
     
-
     private void MainWindow_OnPointerPressed(object? sender, PointerPressedEventArgs e)
     {
         var mainWindow = this.FindControl<Window>("MainWindowControl");
