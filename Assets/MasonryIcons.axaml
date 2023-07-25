@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <DrawingImage x:Key="ABlock">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 V268 H287 V0 H0 Z">
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M104,8.5L257.5,116.5 257.5,236.5 104,128.5 104,8.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F1 M287,268z M0,0z M103.5,83.5L179,61 179,137 103.5,83.5z" />
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M0,39.5L153.5,147.5 153.5,267.5 0,159.5 0,39.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F0 M287,268z M0,0z M257.5,116.5L286.5,108 286.5,227 257.5,236.5 182.5,258 153.5,267.5 153.5,147.5 182.5,139 257.5,116.5z" />
+                    <GeometryDrawing Brush="#FFD9D9D9" Geometry="F0 M287,268z M0,0z M133,0L104,8.5 153.887,43.5999 78.7808,66.0249 29,31 0,39.5 153.5,147.5 170.768,142.439 170.905,142.535 271.5,112.5 271.396,112.427 286.5,108 133,0z M103.663,83.5317L157.691,121.545 232.797,99.1196 178.77,61.1067 103.663,83.5317z" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        
+        <DrawingImage x:Key="RegularBlock">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 V268 H287 V0 H0 Z">
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M104,8.5L257.5,116.5 257.5,236.5 104,128.5 104,8.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F1 M287,268z M0,0z M52.5,48.5L128,26 128,102 52.5,48.5z" />
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M0,39.5L153.5,147.5 153.5,267.5 0,159.5 0,39.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F0 M287,268z M0,0z M257.5,116.5L286.5,108 286.5,227 257.5,236.5 182.5,258 153.5,267.5 153.5,147.5 182.5,139 257.5,116.5z" />
+                    <GeometryDrawing Brush="#FFD9D9D9" Geometry="F1 M287,268z M0,0z M136.5,23.75L111.595,6.25 11,36.2853 35.9052,53.7853 136.5,23.75z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F1 M287,268z M0,0z M114.5,91.25L190,68.75 190,144.75 114.5,91.25z" />
+                    <GeometryDrawing Brush="#FFD9D9D9" Geometry="F1 M287,268z M0,0z M198.5,66.5L173.595,49 73,79.0353 97.9052,96.5353 198.5,66.5z" />
+                    <GeometryDrawing Brush="#FFD9D9D9" Geometry="F0 M287,268z M0,0z M104,8.5L133,0 286.5,108 271.396,112.427 271.5,112.5 170.905,142.535 170.768,142.439 153.5,147.5 0,39.5 29,31 157.691,121.545 232.797,99.1196 104,8.5z" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+        
+        <DrawingImage x:Key="HBlock">
+            <DrawingImage.Drawing>
+                <DrawingGroup ClipGeometry="M0,0 V268 H287 V0 H0 Z">
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M104,8.5L257.5,116.5 257.5,236.5 104,128.5 104,8.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F1 M287,268z M0,0z M78.5,66.5L154,44 154,120 78.5,66.5z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F1 M287,268z M0,0z M154.5,120L229.5,97.5 229.5,217.5 154.5,239 154.5,120z" />
+                    <GeometryDrawing Brush="#FFA8A8A8" Geometry="F0 M287,268z M0,0z M286.5,108L257.5,116.5 257.5,236.5 286.5,227 286.5,108z M182.5,139L153.5,147.5 153.5,267.5 182.5,258 182.5,139z" />
+                    <GeometryDrawing Brush="#FFD9D9D9" Geometry="F0 M287,268z M0,0z M133,0L104,8.5 129.476,26.4242 54.3691,48.8493 29,31 0,39.5 153.5,147.5 182.5,139 155.272,119.843 230.379,97.4178 257.5,116.5 286.5,108 133,0z M79.2515,66.3561L130.39,102.336 205.496,79.911 154.358,43.931 79.2515,66.3561z" />
+                    <GeometryDrawing Brush="#FF494949" Geometry="F1 M287,268z M0,0z M0,39.5L153.5,147.5 153.5,267.5 0,159.5 0,39.5z" />
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+</ResourceDictionary>

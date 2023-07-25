@@ -5,8 +5,7 @@
              xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
              x:Class="CustomerDemo.Views.HomeView"
-             x:DataType="viewModels:HomeViewModel"
-             Background="#252525">
+             x:DataType="viewModels:HomeViewModel">
     <Design.DataContext>
         <viewModels:HomeViewModel/>
     </Design.DataContext>

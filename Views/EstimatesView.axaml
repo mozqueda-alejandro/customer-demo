@@ -10,17 +10,6 @@
         <vm:EstimatesViewModel/>
     </Design.DataContext>
     
-    <StackPanel Margin="0,150,0,0">
-        <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Button Content="Home" Command="{Binding NavigateToHomeCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,16,0,0"/>
-        <Button Content="Clients" Command="{Binding NavigateToClientsCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,16,0,0"/>
-        <Button Content="Vendors" Command="{Binding NavigateToVendorsCommand}"
-                HorizontalAlignment="Center"
-                Margin="0,16,0,0"/>
-    </StackPanel>
+    
     
 </UserControl>
