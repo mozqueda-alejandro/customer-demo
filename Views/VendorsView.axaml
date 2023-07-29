@@ -1,16 +1,19 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="using:CustomerDemo.ViewModels"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CustomerDemo.Views.VendorsView"
-             x:DataType="vm:VendorsViewModel"
-             xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia">
+﻿<UserControl
+    x:Class="CustomerDemo.Views.VendorsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:CustomerDemo.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:VendorsViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
-        <vm:VendorsViewModel/>
+        <vm:VendorsViewModel />
     </Design.DataContext>
-    
-    <lvc:CartesianChart Series="{Binding Series}"/>
+
+    <lvc:CartesianChart Series="{Binding Series}" />
     <!-- <TextBlock Text="{Binding Title}" HorizontalAlignment="Center" VerticalAlignment="Center"/> -->
 </UserControl>

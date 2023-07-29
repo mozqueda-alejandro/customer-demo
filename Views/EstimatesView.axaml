@@ -1,34 +1,40 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:vm="using:CustomerDemo.ViewModels"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CustomerDemo.Views.EstimatesView"
-             x:DataType="vm:EstimatesViewModel">
-    <Design.DataContext> 
-        <vm:EstimatesViewModel/>
+﻿<UserControl
+    x:Class="CustomerDemo.Views.EstimatesView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:CustomerDemo.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:EstimatesViewModel"
+    mc:Ignorable="d">
+    <Design.DataContext>
+        <vm:EstimatesViewModel />
     </Design.DataContext>
-    
-    <!-- "{x:Static MyNameSpace:MyClass.MY_CONSTANT}" -->
-    
+
+    <!--  "{x:Static MyNameSpace:MyClass.MY_CONSTANT}"  -->
+
     <Grid ColumnDefinitions="128,*,128">
         <StackPanel Grid.Column="1" Margin="0,48,0,0">
-            <TextBlock Text="Estimates"
-                       Theme="{StaticResource TitleTextBlockStyle}"/>
-            <Grid ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,12,0,0">
-                <ComboBox Grid.Column="0" PlaceholderText="Filter by: "/>
-                <ComboBox Grid.Column="1" PlaceholderText="Sort by: " Margin="12,0,0,0"/>
-                <SplitButton Grid.Column="3" Content="New estimate" Classes="accent">
+            <TextBlock Text="Estimates" Theme="{StaticResource TitleTextBlockStyle}" />
+            <Grid Margin="0,12,0,0" ColumnDefinitions="Auto,Auto,*,Auto">
+                <ComboBox Grid.Column="0" PlaceholderText="Filter by: " />
+                <ComboBox
+                    Grid.Column="1"
+                    Margin="12,0,0,0"
+                    PlaceholderText="Sort by: " />
+                <SplitButton
+                    Grid.Column="3"
+                    Classes="accent"
+                    Content="New estimate">
                     <SplitButton.Flyout>
-                        <MenuFlyout Placement="Bottom" ItemsSource="{x:Static vm:EstimatesViewModel.JobScopes}" >
-                            
-                        </MenuFlyout>
+                        <MenuFlyout ItemsSource="{x:Static vm:EstimatesViewModel.JobScopes}" Placement="Bottom" />
                     </SplitButton.Flyout>
                 </SplitButton>
             </Grid>
-            
+
         </StackPanel>
     </Grid>
-    
+
 </UserControl>

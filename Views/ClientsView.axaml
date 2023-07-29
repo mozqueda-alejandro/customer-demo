@@ -1,99 +1,116 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:ui="using:FluentAvalonia.UI.Controls"
-             x:Class="CustomerDemo.Views.ClientsView"
-             x:DataType="viewModels:ClientsViewModel">
+﻿<UserControl
+    x:Class="CustomerDemo.Views.ClientsView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:FluentAvalonia.UI.Controls"
+    xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:ClientsViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
-        <viewModels:ClientsViewModel/>
+        <viewModels:ClientsViewModel />
     </Design.DataContext>
-    
+
     <UserControl.Styles>
         <Style Selector="DataGridRow">
-            <!--TODO: change font size -->
-            <Setter Property="FontSize" Value="16"/>
+            <!--  TODO: change font size  -->
+            <Setter Property="FontSize" Value="16" />
         </Style>
-        
+
         <Style Selector="Button.toolbar">
             <!-- <Setter Property="Margin" Value="9,3,9,3"/> -->
-            <Setter Property="Width" Value="36"/>
-            <Setter Property="Height" Value="36"/>
-            <Setter Property="BorderThickness" Value="2"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}"/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
+            <Setter Property="Background" Value="Transparent" />
             <!-- <Setter Property="Padding" Value="6"/> -->
         </Style>
         <Style Selector="Button.toolbar /template/ ContentPresenter">
-            <Setter Property="CornerRadius" Value="18"/>
+            <Setter Property="CornerRadius" Value="18" />
         </Style>
         <Style Selector="Button:pointerover.toolbar /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="Transparent" />
         </Style>
     </UserControl.Styles>
-    
+
     <Grid RowDefinitions="Auto,*">
         <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto">
-            <TextBlock Grid.Column="0" Text="Client Database"
-                       Margin="128,48"
-                       Theme="{StaticResource TitleTextBlockStyle}"/>
-            
-            <TextBox x:Name="ClientTextBox" Height="16" Grid.Column="1" Watermark="Search Clients" KeyUp="ClientTextBox_OnKeyUp"/>
-            
-            <Button Grid.Column="2"
-                    Content="Add Client"
-                    Margin="128,48"
-                    Command="{Binding NavigateToNewClientCommand}">
-                <Button.Template></Button.Template>
+            <TextBlock
+                Grid.Column="0"
+                Margin="128,48"
+                Text="Client Database"
+                Theme="{StaticResource TitleTextBlockStyle}" />
+
+            <TextBox
+                x:Name="ClientTextBox"
+                Grid.Column="1"
+                Height="16"
+                KeyUp="ClientTextBox_OnKeyUp"
+                Watermark="Search Clients" />
+
+            <Button
+                Grid.Column="2"
+                Margin="128,48"
+                Command="{Binding NavigateToNewClientCommand}"
+                Content="Add Client">
+                <Button.Template />
             </Button>
         </Grid>
-        
-        <Border Grid.Row="1" 
-                BorderThickness="10"
-                Margin="128,0,128,36">  
-            <DataGrid Name="ClientGrid"
-                      Grid.Row="1" AutoGenerateColumns="False" ItemsSource="{Binding Clients}" 
-                      IsReadOnly="True" Focusable="False"
-                      SelectionMode="Single"
-                      SelectionChanged="DataGrid_SelectionChanged" RowHeight="42">
+
+        <Border
+            Grid.Row="1"
+            Margin="128,0,128,36"
+            BorderThickness="10">
+            <DataGrid
+                Name="ClientGrid"
+                Grid.Row="1"
+                AutoGenerateColumns="False"
+                Focusable="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Clients}"
+                RowHeight="42"
+                SelectionChanged="DataGrid_SelectionChanged"
+                SelectionMode="Single">
                 <!-- <DataGrid.GridLinesVisibility> -->
                 <!--     <DataGridGridLinesVisibility>None</DataGridGridLinesVisibility> -->
                 <!-- </DataGrid.GridLinesVisibility> -->
-                
-                
+
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}" />
-                    <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="Phone" Binding="{Binding Phone}"/>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Address}"/>
-                    <DataGridTextColumn Header="Source" Binding="{Binding SourceId}"/>
+                    <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" />
+                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" />
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                    <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" />
+                    <DataGridTextColumn Binding="{Binding Address}" Header="Address" />
+                    <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" />
                     <DataGridTemplateColumn>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button x:Name="DataGridButton" Classes="toolbar">
                                     <Button.Flyout>
                                         <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
-                                            <MenuItem Header="View"/>
-                                            <MenuItem Header="Edit"/>
-                                            <MenuItem Header="Print"/>
-                                            <Separator/>
-                                            <MenuItem Header="Send"/>
-                                            <MenuItem Header="Export as PDF"/>
-                                            <Separator/>
-                                            <MenuItem Header="Delete"/>
+                                            <MenuItem Header="View" />
+                                            <MenuItem Header="Edit" />
+                                            <MenuItem Header="Print" />
+                                            <Separator />
+                                            <MenuItem Header="Send" />
+                                            <MenuItem Header="Export as PDF" />
+                                            <Separator />
+                                            <MenuItem Header="Delete" />
                                         </MenuFlyout>
                                     </Button.Flyout>
-                                    <ui:SymbolIcon Symbol="ChevronDown"></ui:SymbolIcon>
+                                    <ui:SymbolIcon Symbol="ChevronDown" />
                                 </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-        </Border>  
+        </Border>
     </Grid>
-    
+
 </UserControl>

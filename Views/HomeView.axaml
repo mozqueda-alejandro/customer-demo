@@ -1,27 +1,31 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="300"
-             x:Class="CustomerDemo.Views.HomeView"
-             x:DataType="viewModels:HomeViewModel">
+﻿<UserControl
+    x:Class="CustomerDemo.Views.HomeView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    x:DataType="viewModels:HomeViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
-        <viewModels:HomeViewModel/>
+        <viewModels:HomeViewModel />
     </Design.DataContext>
-    
-    <Grid>
-        <StackPanel HorizontalAlignment="Center"
-                    VerticalAlignment="Center">
-            <TextBlock Text="Home"
-                       FontSize="24"
-                       HorizontalAlignment="Center"/>
-            <Button Content="Go to Settings"
-                    Margin="10"
-                    Command="{Binding NavigateToSettingsCommand}"/>
-            <Button Content="Back" Command="{Binding NavigateBackCommand}"></Button>
 
-        </StackPanel>    
-        
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="24"
+                Text="Home" />
+            <Button
+                Margin="10"
+                Command="{Binding NavigateToSettingsCommand}"
+                Content="Go to Settings" />
+            <Button Command="{Binding NavigateBackCommand}" Content="Back" />
+
+        </StackPanel>
+
     </Grid>
 </UserControl>

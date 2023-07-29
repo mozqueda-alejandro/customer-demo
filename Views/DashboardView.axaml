@@ -1,43 +1,46 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="using:CustomerDemo.ViewModels"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="CustomerDemo.Views.DashboardView"
-             x:DataType="vm:DashboardViewModel">
+﻿<UserControl
+    x:Class="CustomerDemo.Views.DashboardView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:CustomerDemo.ViewModels"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:DashboardViewModel"
+    mc:Ignorable="d">
     <Design.DataContext>
-        <vm:DashboardViewModel/>
+        <vm:DashboardViewModel />
     </Design.DataContext>
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceInclude Source="/Assets/MasonryIcons.axaml"/>
+                <ResourceInclude Source="/Assets/MasonryIcons.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-        
+
     </UserControl.Resources>
-    
+
     <StackPanel Orientation="Horizontal">
         <Button Margin="0,0,12,0">
-            <Viewbox Stretch="Uniform" MaxHeight="36">
-                <controls:ImageIcon Source="{StaticResource ABlock}"/>
+            <Viewbox MaxHeight="36" Stretch="Uniform">
+                <controls:ImageIcon Source="{StaticResource ABlock}" />
             </Viewbox>
         </Button>
-        
+
         <Button Margin="0,0,12,0">
-            <Viewbox Stretch="Uniform" MaxHeight="36">
-                <controls:ImageIcon Source="{StaticResource RegularBlock}"/>
+            <Viewbox MaxHeight="36" Stretch="Uniform">
+                <controls:ImageIcon Source="{StaticResource RegularBlock}" />
             </Viewbox>
         </Button>
-        
+
         <Button>
-            <Viewbox Stretch="Uniform" MaxHeight="36">
-                <controls:ImageIcon Source="{StaticResource HBlock}"/>
+            <Viewbox MaxHeight="36" Stretch="Uniform">
+                <controls:ImageIcon Source="{StaticResource HBlock}" />
             </Viewbox>
         </Button>
-        
+
     </StackPanel>
 </UserControl>

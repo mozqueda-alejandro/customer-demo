@@ -1,16 +1,17 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
-             xmlns:views="clr-namespace:CustomerDemo.Views"
-             x:Class="CustomerDemo.App"
-             xmlns:sty="using:FluentAvalonia.Styling"
-             xmlns:customerDemo="clr-namespace:CustomerDemo">
+<Application
+    x:Class="CustomerDemo.App"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:customerDemo="clr-namespace:CustomerDemo"
+    xmlns:sty="using:FluentAvalonia.Styling"
+    xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+    xmlns:views="clr-namespace:CustomerDemo.Views">
 
     <Application.Styles>
         <!-- <FluentTheme Mode="Dark"/> -->
-        <sty:FluentAvaloniaTheme/>
+        <sty:FluentAvaloniaTheme />
     </Application.Styles>
-    
+
     <Application.Resources>
         <Color x:Key="SystemAccentColor">#525053</Color>
         <Color x:Key="SystemAccentColorLight1">#D44B52</Color>
@@ -20,41 +21,41 @@
         <Color x:Key="SystemAccentColorDark2">#7B1A20</Color>
         <Color x:Key="SystemAccentColorDark3">#8F1D24</Color>
     </Application.Resources>
-    
+
     <Application.DataTemplates>
-        
+
         <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-            <views:HomeView/>
+            <views:HomeView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
-            <views:DashboardView/>
+            <views:DashboardView />
         </DataTemplate>
-       
+
         <DataTemplate DataType="{x:Type viewModels:EstimatesViewModel}">
-            <views:EstimatesView/>
+            <views:EstimatesView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewModels:ClientsViewModel}">
-            <views:ClientsView/>
+            <views:ClientsView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewModels:NewClientViewModel}">
-            <views:NewClientView/>
+            <views:NewClientView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewModels:VendorsViewModel}">
-            <views:VendorsView/>
+            <views:VendorsView />
         </DataTemplate>
-         
+
         <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
-            <views:SettingsView/>
+            <views:SettingsView />
         </DataTemplate>
-        
-        <!-- Display Fluent icons -->
-        <!-- <ui:FontIcon Glyph="&#xE10B;" FontFamily="{StaticResource SymbolThemeFontFamily}" -->
-        <!--              FontSize="24"/> -->
+
+        <!--  Display Fluent icons  -->
+        <!--  <ui:FontIcon Glyph="&#xE10B;" FontFamily="{StaticResource SymbolThemeFontFamily}"  -->
+        <!--  FontSize="24"/>  -->
         <!-- <ui:SymbolIcon Symbol="Find" FontSize="24"/> -->
-        
+
     </Application.DataTemplates>
 </Application>
