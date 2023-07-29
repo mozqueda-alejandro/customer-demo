@@ -58,41 +58,42 @@ public partial class MainWindow : AppWindow
 
         InitNavigationCommands();
         InitNavigationItems();
-        
+
+        ViewModel.NavigationService.PropertyChanged += NavigationService_OnPropertyChanged;
         NavigationView.SelectionChanged += OnMenuItemChanged;
-        ViewModel.NavigationService.PropertyChanged += OnCurrentViewChanged;
+        NavigationView.BackRequested += OnBackRequested;
         NavigationView.SelectedItem = NavigationView.MenuItems.ElementAt(0);
-        
+
         SetMenuItemExpansion(true);
+        NavigationView.IsBackEnabled = false;
     }
+    
+    
 
-    private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
-    {
-        if (e.SelectedItem is not NavigationViewItem selectedItem) return;
-        if (ViewModel.NavigationService.CurrentView != null)
-        {
-            if (selectedItem.Name == ViewModel.NavigationService.CurrentViewName) return; // Prevents navigation to same view
-        }
-        
-        if (NavigationCommands.TryGetValue(selectedItem.Name!, out var navigationCommand))
-        {
-            navigationCommand.Execute(null);
-        }
-    }
-
-    private void OnCurrentViewChanged(object? sender, PropertyChangedEventArgs e)
+    private void NavigationService_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not INavigationService navigationService) return;
-        if (e.PropertyName != nameof(navigationService.CurrentViewName)) return;
+        switch (e.PropertyName)
+        {
+            case nameof(navigationService.CurrentViewName):
+                OnCurrentViewChanged();
+                break;
+            case nameof(navigationService.CanNavigateBack):
+                OnCanNavigateBackChanged();
+                break;
+        }
+    }
+
+    private void OnCurrentViewChanged()
+    {
         var prevSelectionName = ((NavigationViewItem)NavigationView.SelectedItem).Name;
-        if (prevSelectionName == navigationService.CurrentViewName) return; // Prevents item from being reselected
+        if (prevSelectionName == ViewModel.NavigationService.CurrentViewName) return; // Prevents item from being reselected
         
         var wasPaneExpanded = NavigationView.IsPaneOpen;
         NavigationView.IsPaneOpen = true;
         SetMenuItemExpansion(true);
 
-        if (!NavigationItems.TryGetValue(navigationService.CurrentViewName, out var menuItemContainer)) return;
-        
+        if (!NavigationItems.TryGetValue(ViewModel.NavigationService.CurrentViewName, out var menuItemContainer)) return;
         if (menuItemContainer.HasParent)
         {
             var parent = this.FindControl<NavigationViewItem>(menuItemContainer.ParentName)!;
@@ -118,6 +119,28 @@ public partial class MainWindow : AppWindow
         SetMenuItemExpansion(false);
         NavigationView.IsPaneOpen = wasPaneExpanded;
     }
+
+    private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
+    {
+        if (e.SelectedItem is not NavigationViewItem selectedItem) return;
+        if (ViewModel.NavigationService.CurrentView != null)
+        {
+            if (selectedItem.Name == ViewModel.NavigationService.CurrentViewName) return; // Prevents navigation to same view
+        }
+        
+        if (NavigationCommands.TryGetValue(selectedItem.Name!, out var navigationCommand))
+        {
+            navigationCommand.Execute(null);
+        }
+    }
+
+    private void OnCanNavigateBackChanged()
+    {
+        NavigationView.IsBackEnabled = ViewModel.NavigationService.CanNavigateBack;
+    }
+
+    private void OnBackRequested(object? sender, NavigationViewBackRequestedEventArgs e) =>
+        ViewModel.NavigateBackCommand.Execute(null);
 
     public void SetMenuItemExpansion(bool isExpanded)
     {

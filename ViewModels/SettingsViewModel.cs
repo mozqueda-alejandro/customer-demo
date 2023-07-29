@@ -21,10 +21,18 @@ public partial class SettingsViewModel : ViewModelBase
             Application.Current.RequestedThemeVariant = value;
         }
     }
-
     
-    public SettingsViewModel()
+    [ObservableProperty]
+    private INavigationService? _navigationService;
+    
+    [RelayCommand]
+    private void NavigateToHome() => NavigationService?.NavigateTo<HomeViewModel>();
+    
+    [RelayCommand]
+    private void NavigateBack() => NavigationService?.NavigateBack();
+    
+    public SettingsViewModel(INavigationService navigationService)
     {
-        
+        NavigationService = navigationService;
     }
 }

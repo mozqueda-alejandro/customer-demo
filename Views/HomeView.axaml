@@ -19,6 +19,8 @@
             <Button Content="Go to Settings"
                     Margin="10"
                     Command="{Binding NavigateToSettingsCommand}"/>
+            <Button Content="Back" Command="{Binding NavigateBackCommand}"></Button>
+
         </StackPanel>    
         
     </Grid>

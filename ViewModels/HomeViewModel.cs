@@ -11,6 +11,9 @@ public partial class HomeViewModel : ViewModelBase
     
     [RelayCommand]
     private void NavigateToSettings() => NavigationService?.NavigateTo<SettingsViewModel>();
+    
+    [RelayCommand]
+    private void NavigateBack() => NavigationService?.NavigateBack();
 
     public HomeViewModel()
     {

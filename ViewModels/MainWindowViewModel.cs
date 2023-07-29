@@ -19,6 +19,9 @@ public partial class MainWindowViewModel : ViewModelBase
     #region NavigationService
     [ObservableProperty]
     private INavigationService _navigationService;
+
+    [RelayCommand]
+    private void NavigateBack() => NavigationService.NavigateBack();
     
     [RelayCommand]
     private void NavigateToHome() => NavigationService.NavigateTo<HomeViewModel>();

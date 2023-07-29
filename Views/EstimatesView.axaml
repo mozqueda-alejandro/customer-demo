@@ -10,6 +10,25 @@
         <vm:EstimatesViewModel/>
     </Design.DataContext>
     
+    <!-- "{x:Static MyNameSpace:MyClass.MY_CONSTANT}" -->
     
+    <Grid ColumnDefinitions="128,*,128">
+        <StackPanel Grid.Column="1" Margin="0,48,0,0">
+            <TextBlock Text="Estimates"
+                       Theme="{StaticResource TitleTextBlockStyle}"/>
+            <Grid ColumnDefinitions="Auto,Auto,*,Auto" Margin="0,12,0,0">
+                <ComboBox Grid.Column="0" PlaceholderText="Filter by: "/>
+                <ComboBox Grid.Column="1" PlaceholderText="Sort by: " Margin="12,0,0,0"/>
+                <SplitButton Grid.Column="3" Content="New estimate" Classes="accent">
+                    <SplitButton.Flyout>
+                        <MenuFlyout Placement="Bottom" ItemsSource="{x:Static vm:EstimatesViewModel.JobScopes}" >
+                            
+                        </MenuFlyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+            </Grid>
+            
+        </StackPanel>
+    </Grid>
     
 </UserControl>

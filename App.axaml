@@ -12,7 +12,7 @@
     </Application.Styles>
     
     <Application.Resources>
-        <Color x:Key="SystemAccentColor">#AA2930</Color>
+        <Color x:Key="SystemAccentColor">#525053</Color>
         <Color x:Key="SystemAccentColorLight1">#D44B52</Color>
         <Color x:Key="SystemAccentColorLight2">#E66B70</Color>
         <Color x:Key="SystemAccentColorLight3">#F88C8F</Color>

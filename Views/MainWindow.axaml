@@ -29,59 +29,70 @@
         </ResourceDictionary>
     </Window.Resources>
     
-    <ui:NavigationView x:Name="NavigationViewControl" PaneDisplayMode="Left" OpenPaneLength="264" 
-                       Content="{Binding NavigationService.CurrentView}"
-                       IsSettingsVisible="False">
-        <ui:NavigationView.MenuItems>
-            <!-- x:Name attributes must be in the form "UserControlView" -->
-            <ui:NavigationViewItem x:Name="HomeView" Content="Home"
-                                   IconSource="Home"/>
-            <ui:NavigationViewItemSeparator/>
-            <ui:NavigationViewItem x:Name="DashboardView" Content="Dashboard"
-                                   IconSource="ViewAll"/>
-        
-            <ui:NavigationViewItem x:Name="Sales" Content="Sales and Payments" SelectsOnInvoked="False"
-                                   IconSource="{StaticResource PaymentCardIcon}">
-                <ui:NavigationViewItem.MenuItems>
-                    <ui:NavigationViewItem x:Name="EstimatesView" Content="Estimates"/>
-                    <ui:NavigationViewItem x:Name="InvoicesView" Content="Invoices"/>
-                    <ui:NavigationViewItem x:Name="ClientsView" Content="Clients"/>
-                    <ui:NavigationViewItem x:Name="InventoryView" Content="Inventory"/>
-                </ui:NavigationViewItem.MenuItems>
-            </ui:NavigationViewItem>
-        
-            <ui:NavigationViewItem x:Name="Purchases" Content="Purchases" SelectsOnInvoked="False" 
-                                   IconSource="{StaticResource ShoppingCartIcon}">
-                <ui:NavigationViewItem.MenuItems>
-                    <ui:NavigationViewItem x:Name="BillsView" Content="Bills"/>
-                    <ui:NavigationViewItem x:Name="VendorsView" Content="Vendors"/>
-                </ui:NavigationViewItem.MenuItems>
-            </ui:NavigationViewItem>
-        
-            <ui:NavigationViewItem x:Name="Accounting" Content="Accounting" IconSource="Library" SelectsOnInvoked="False">
-                <ui:NavigationViewItem.MenuItems>
-                    <ui:NavigationViewItem x:Name="TransactionsView" Content="Transactions"/>
-                    <ui:NavigationViewItem x:Name="ChartOfAccountsView" Content="Chart of Accounts"/>
-                </ui:NavigationViewItem.MenuItems>
-            </ui:NavigationViewItem>
-        
-            <ui:NavigationViewItem x:Name="Payroll" Content="Payroll" IconSource="People" SelectsOnInvoked="False">
-                <ui:NavigationViewItem.MenuItems>
-                    <ui:NavigationViewItem x:Name="EmployeesView" Content="Employees" />
-                    <ui:NavigationViewItem x:Name="TimesheetsView" Content="Timesheets"/>
-                    <ui:NavigationViewItem x:Name="TaxFormsView" Content="Tax Forms"/>
-                </ui:NavigationViewItem.MenuItems>
-            </ui:NavigationViewItem>
-        
-            <ui:NavigationViewItem x:Name="ReportsView" Content="Reports"
-                                   IconSource="{StaticResource ReportDocumentIcon}"/>
-        </ui:NavigationView.MenuItems>
-        
-        <ui:NavigationView.FooterMenuItems>
-            <ui:NavigationViewItem x:Name="MaterialLibraryView" Content="Material Library"
-                                   IconSource="{StaticResource ConstructionIcon}"/>
-            <ui:NavigationViewItem x:Name="SettingsView" Content="Settings"
-                                   IconSource="Settings"/>
-        </ui:NavigationView.FooterMenuItems>
-    </ui:NavigationView>
+    <Grid RowDefinitions="Auto,*">
+        <Grid>
+            
+        </Grid>
+        <ui:NavigationView x:Name="NavigationViewControl" Grid.Row="0" Grid.RowSpan="2"
+                               AlwaysShowHeader="False"
+                               PaneDisplayMode="Left"
+                               OpenPaneLength="264" 
+                               Content="{Binding NavigationService.CurrentView}"
+                               IsSettingsVisible="False"
+                               IsBackButtonVisible="True">
+            <ui:NavigationView.MenuItems>
+                <!-- x:Name attributes must be in the form "UserControlView" -->
+                <ui:NavigationViewItem x:Name="HomeView" Content="Home"
+                                       IconSource="Home"/>
+                <ui:NavigationViewItemSeparator/>
+                <ui:NavigationViewItem x:Name="DashboardView" Content="Dashboard"
+                                       IconSource="ViewAll"/>
+            
+                <ui:NavigationViewItem x:Name="Sales" Content="Sales and Payments" SelectsOnInvoked="False"
+                                       IconSource="{StaticResource PaymentCardIcon}">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem x:Name="EstimatesView" Content="Estimates"/>
+                        <ui:NavigationViewItem x:Name="InvoicesView" Content="Invoices"/>
+                        <ui:NavigationViewItem x:Name="ClientsView" Content="Clients"/>
+                        <ui:NavigationViewItem x:Name="InventoryView" Content="Inventory"/>
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem x:Name="Purchases" Content="Purchases" SelectsOnInvoked="False" 
+                                       IconSource="{StaticResource ShoppingCartIcon}">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem x:Name="BillsView" Content="Bills"/>
+                        <ui:NavigationViewItem x:Name="VendorsView" Content="Vendors"/>
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem x:Name="Accounting" Content="Accounting" IconSource="Library" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem x:Name="TransactionsView" Content="Transactions"/>
+                        <ui:NavigationViewItem x:Name="ChartOfAccountsView" Content="Chart of Accounts"/>
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem x:Name="Payroll" Content="Payroll" IconSource="People" SelectsOnInvoked="False">
+                    <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem x:Name="EmployeesView" Content="Employees" />
+                        <ui:NavigationViewItem x:Name="TimesheetsView" Content="Timesheets"/>
+                        <ui:NavigationViewItem x:Name="TaxFormsView" Content="Tax Forms"/>
+                    </ui:NavigationViewItem.MenuItems>
+                </ui:NavigationViewItem>
+            
+                <ui:NavigationViewItem x:Name="ReportsView" Content="Reports"
+                                       IconSource="{StaticResource ReportDocumentIcon}"/>
+            </ui:NavigationView.MenuItems>
+            
+            <ui:NavigationView.FooterMenuItems>
+                <ui:NavigationViewItem x:Name="MaterialLibraryView" Content="Material Library"
+                                       IconSource="{StaticResource ConstructionIcon}"/>
+                <ui:NavigationViewItem x:Name="SettingsView" Content="Settings"
+                                       IconSource="Settings"/>
+            </ui:NavigationView.FooterMenuItems>
+        </ui:NavigationView>
+    </Grid>
+    
+    
 </Window>

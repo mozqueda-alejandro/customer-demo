@@ -25,18 +25,34 @@
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
         <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-rc1" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.860" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.5.23280.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.6.23329.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.6.23329.4">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0-preview.6.23329.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.5.23280.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-preview.6.23329.7" />
     </ItemGroup>
 
     <ItemGroup>
       <AvaloniaXaml Remove="Views\test.axaml" />
+      <AvaloniaXaml Remove="Views\JobsView.axaml" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Views\test.axaml.cs" />
+      <Compile Remove="Views\JobsView.axaml.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Views\JobScopeViews\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="intro.sqlite" />
     </ItemGroup>
 </Project>

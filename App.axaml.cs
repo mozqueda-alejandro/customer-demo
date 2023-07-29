@@ -30,7 +30,8 @@ public partial class App : Application
         services.AddSingleton<DashboardViewModel>();
         services.AddSingleton<EstimatesViewModel>();
         services.AddSingleton<ClientsViewModel>();
-        services.AddSingleton<NewClientViewModel>();
+        services.AddSingleton<ClientsView>();
+        services.AddTransient<NewClientViewModel>();
         services.AddSingleton<VendorsViewModel>();
         services.AddSingleton<SettingsViewModel>();
         

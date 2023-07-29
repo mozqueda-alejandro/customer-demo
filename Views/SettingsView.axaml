@@ -23,6 +23,9 @@
                 </controls:SettingsExpander.Footer>
                 
             </controls:SettingsExpander>
+            
+            <Button Content="Home" Command="{Binding NavigateToHomeCommand}"/>
+            <Button Content="Back" Command="{Binding NavigateBackCommand}"></Button>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
