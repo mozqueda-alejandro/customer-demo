@@ -15,25 +15,32 @@
     </Design.DataContext>
 
     <UserControl.Styles>
+        <Style Selector="Button /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="CornerRadius" Value="18"></Setter>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="BorderBrush" Value="Transparent"></Setter>
+        </Style>
+        
         <Style Selector="DataGridRow">
             <!--  TODO: change font size  -->
             <Setter Property="FontSize" Value="16" />
         </Style>
 
-        <Style Selector="Button.toolbar">
-            <!-- <Setter Property="Margin" Value="9,3,9,3"/> -->
-            <Setter Property="Width" Value="36" />
-            <Setter Property="Height" Value="36" />
-            <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" />
-            <Setter Property="Background" Value="Transparent" />
-            <!-- <Setter Property="Padding" Value="6"/> -->
-        </Style>
-        <Style Selector="Button.toolbar /template/ ContentPresenter">
-            <Setter Property="CornerRadius" Value="18" />
-        </Style>
-        <Style Selector="Button:pointerover.toolbar /template/ ContentPresenter">
-            <Setter Property="Background" Value="Transparent" />
+        <!-- <Style Selector="Button.toolbar"> -->
+        <!--     ~1~ <Setter Property="Margin" Value="9,3,9,3"/> @1@ -->
+        <!--     <Setter Property="Width" Value="36" /> -->
+        <!--     <Setter Property="Height" Value="36" /> -->
+        <!--     <Setter Property="BorderThickness" Value="2" /> -->
+        <!--     <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" /> -->
+        <!--     <Setter Property="Background" Value="Transparent" /> -->
+        <!--     ~1~ <Setter Property="Padding" Value="6"/> @1@ -->
+        <!-- </Style> -->
+        <!-- <Style Selector="Button.toolbar /template/ ContentPresenter"> -->
+        <!--     <Setter Property="CornerRadius" Value="18" /> -->
+        <!-- </Style> -->
+        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
     </UserControl.Styles>
 
@@ -46,11 +53,10 @@
                 Theme="{StaticResource TitleTextBlockStyle}" />
 
             <TextBox
-                x:Name="ClientTextBox"
                 Grid.Column="1"
                 Height="16"
-                KeyUp="ClientTextBox_OnKeyUp"
-                Watermark="Search Clients" />
+                Text="{Binding SearchText}"
+                Watermark="Search clients" />
 
             <Button
                 Grid.Column="2"
@@ -71,26 +77,30 @@
                 AutoGenerateColumns="False"
                 Focusable="False"
                 IsReadOnly="True"
-                ItemsSource="{Binding Clients}"
+                ItemsSource="{Binding FilteredClients}"
                 RowHeight="42"
                 SelectionChanged="DataGrid_SelectionChanged"
                 SelectionMode="Single">
                 <!-- <DataGrid.GridLinesVisibility> -->
                 <!--     <DataGridGridLinesVisibility>None</DataGridGridLinesVisibility> -->
                 <!-- </DataGrid.GridLinesVisibility> -->
-
-
+                <DataGrid.Styles>
+                    <Style Selector="DataGridCell">
+                        <Setter Property="FontSize" Value="14"/>
+                    </Style>
+                </DataGrid.Styles>
+                
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" />
-                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" />
-                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                    <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" />
-                    <DataGridTextColumn Binding="{Binding Address}" Header="Address" />
-                    <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" />
-                    <DataGridTemplateColumn>
+                    <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" Width="*" />
+                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" Width="*"/>
+                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="*" />
+                    <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" Width="*" />
+                    <DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="*" />
+                    <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" Width="*" />
+                    <DataGridTemplateColumn Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button x:Name="DataGridButton" Classes="toolbar">
+                                <Button x:Name="DataGridButton">
                                     <Button.Flyout>
                                         <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
                                             <MenuItem Header="View" />
@@ -100,7 +110,8 @@
                                             <MenuItem Header="Send" />
                                             <MenuItem Header="Export as PDF" />
                                             <Separator />
-                                            <MenuItem Header="Delete" />
+                                            <MenuItem Header="Delete"
+                                                      Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
                                         </MenuFlyout>
                                     </Button.Flyout>
                                     <ui:SymbolIcon Symbol="ChevronDown" />

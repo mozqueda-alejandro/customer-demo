@@ -13,6 +13,8 @@
     x:DataType="vm:MainWindowViewModel"
     Focusable="True"
     Icon="/Assets/cimental-masonry-logo.ico"
+    MinHeight="450"
+    MinWidth="800"
     PointerPressed="MainWindow_OnPointerPressed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">

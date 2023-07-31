@@ -15,7 +15,7 @@
             <TextBlock
                 Margin="128,48"
                 Text="Add New Client"
-                Theme="{StaticResource TitleTextBlockStyle}" />
+                Theme="{DynamicResource TitleTextBlockStyle}" />
         </StackPanel>
 
         <Grid ColumnDefinitions="*,192,64,192,*" Row="1">
