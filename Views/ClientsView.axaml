@@ -8,6 +8,8 @@
     xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:CompileBindings="True"
+    x:Name="root"
     x:DataType="viewModels:ClientsViewModel"
     mc:Ignorable="d">
     <Design.DataContext>
@@ -44,51 +46,90 @@
         </Style>
     </UserControl.Styles>
 
-    <Grid RowDefinitions="Auto,*">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto">
+    <Grid 
+        ColumnDefinitions="108,*,108"
+        RowDefinitions="84,Auto,24,Auto,24,*,84">
+        <Grid 
+            Grid.Row="1"
+            Grid.Column="1"
+            ColumnDefinitions="Auto,*,Auto,Auto">
             <TextBlock
                 Grid.Column="0"
-                Margin="128,48"
-                Text="Client Database"
+                Text="Clients"
                 Theme="{StaticResource TitleTextBlockStyle}" />
-
-            <TextBox
-                Grid.Column="1"
-                Height="16"
-                Text="{Binding SearchText}"
-                Watermark="Search clients" />
 
             <Button
                 Grid.Column="2"
-                Margin="128,48"
-                Command="{Binding NavigateToNewClientCommand}"
-                Content="Add Client">
-                <Button.Template />
-            </Button>
+                Margin="0,0,12,0"
+                Content="Import from CSV"
+                FontWeight="SemiBold"/>
+            
+            <Button
+                Grid.Column="3"
+                Classes="accent"
+                
+                Content="Add Client"
+                FontWeight="SemiBold"/>
         </Grid>
+        
+        <StackPanel Grid.Row="3" Grid.Column="1"
+            Margin="0,0,0,0"
+            Orientation="Horizontal">
+            <TextBox
+                Margin="0,0,20,0"
+                Height="16"
+                Width="248"
+                Text="{Binding SearchText}"
+                Watermark="Search clients" />
+            
+            <Label
+                Margin="0,0,4,0"
+                Background="{DynamicResource AccentButtonBackground}"
+                Content="{Binding FilteredClients.Count}"
+                CornerRadius="8"
+                Height="20"
+                FontSize="10"
+                Foreground="{StaticResource AccentButtonForeground}"
+                VerticalAlignment="Center"/>
+            
+            <Label 
+                Content="clients found"
+                VerticalAlignment="Center"/>
+        </StackPanel>
 
-        <Border
-            Grid.Row="1"
-            Margin="128,0,128,36"
-            BorderThickness="10">
-            <DataGrid
-                Name="ClientGrid"
-                Grid.Row="1"
-                AutoGenerateColumns="False"
-                Focusable="False"
-                IsReadOnly="True"
-                ItemsSource="{Binding FilteredClients}"
-                RowHeight="42"
-                SelectionChanged="DataGrid_SelectionChanged"
-                SelectionMode="Single">
-                <!-- <DataGrid.GridLinesVisibility> -->
-                <!--     <DataGridGridLinesVisibility>None</DataGridGridLinesVisibility> -->
-                <!-- </DataGrid.GridLinesVisibility> -->
+        <!-- <Border Grid.Row="5" Grid.Column="1" -->
+        <!--     > -->
+            <DataGrid Grid.Row="5" Grid.Column="1"
+                      Name="ClientGrid"
+                      AutoGenerateColumns="False"
+                      Focusable="False"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding FilteredClients}"
+                      RowHeight="42"
+                      SelectionChanged="DataGrid_SelectionChanged"
+                      SelectionMode="Single">
+                
                 <DataGrid.Styles>
                     <Style Selector="DataGridCell">
                         <Setter Property="FontSize" Value="14"/>
                     </Style>
                 </DataGrid.Styles>
+                
+                <DataGrid.Resources>
+                    <!-- <MenuFlyout x:Key="ClientRowMenuFlyout"  -->
+                    <!--             ShowMode="TransientWithDismissOnPointerMoveAway"> -->
+                    <!--     <MenuItem Header="View" /> -->
+                    <!--     <MenuItem Header="Edit" /> -->
+                    <!--     <MenuItem Header="Print" /> -->
+                    <!--     <Separator /> -->
+                    <!--     <MenuItem Header="Send" /> -->
+                    <!--     <MenuItem Header="Export as PDF" /> -->
+                    <!--     <Separator /> -->
+                    <!--     <MenuItem Header="Delete" -->
+                    <!--               Command="{Binding Path=DataContext.DeleteClientCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" -->
+                    <!--               Foreground="{DynamicResource SystemFillColorCriticalBrush}"/> -->
+                    <!-- </MenuFlyout> -->
+                </DataGrid.Resources>
                 
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" Width="*" />
@@ -96,14 +137,16 @@
                     <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="*" />
                     <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" Width="*" />
                     <DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="*" />
-                    <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" Width="*" />
+                    <!-- <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" Width="*" /> -->
                     <DataGridTemplateColumn Width="Auto">
                         <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button x:Name="DataGridButton">
+                            <DataTemplate DataType="viewModels:ClientsViewModel">
+                                <Button>
                                     <Button.Flyout>
-                                        <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
-                                            <MenuItem Header="View" />
+                                        <MenuFlyout Placement="BottomEdgeAlignedRight"
+                                                    ShowMode="TransientWithDismissOnPointerMoveAway">
+                                            <MenuItem Header="View" 
+                                                      Click="MenuItemView_OnClick"/>
                                             <MenuItem Header="Edit" />
                                             <MenuItem Header="Print" />
                                             <Separator />
@@ -111,6 +154,8 @@
                                             <MenuItem Header="Export as PDF" />
                                             <Separator />
                                             <MenuItem Header="Delete"
+                                                      Command="{ReflectionBinding #root.DataContext.DeleteClientCommand}"
+                                                      CommandParameter="{Binding}"
                                                       Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
                                         </MenuFlyout>
                                     </Button.Flyout>
@@ -121,7 +166,7 @@
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
             </DataGrid>
-        </Border>
+        <!-- </Border> -->
     </Grid>
 
 </UserControl>

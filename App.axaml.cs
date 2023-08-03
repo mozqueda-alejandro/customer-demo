@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using CommunityToolkit.Mvvm.Messaging;
 using CustomerDemo.Services;
 using CustomerDemo.ViewModels;
 using CustomerDemo.Views;
@@ -35,6 +36,7 @@ public partial class App : Application
         services.AddSingleton<VendorsViewModel>();
         services.AddSingleton<SettingsViewModel>();
         
+        services.AddSingleton<IMessenger, WeakReferenceMessenger>();
         services.AddSingleton<INavigationService, NavigationService>();
         services.AddSingleton<IMyDependency, MyDependency>();
         

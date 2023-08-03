@@ -14,12 +14,12 @@
 
     <Application.Resources>
         <Color x:Key="SystemAccentColor">#525053</Color>
-        <Color x:Key="SystemAccentColorLight1">#D44B52</Color>
-        <Color x:Key="SystemAccentColorLight2">#E66B70</Color>
-        <Color x:Key="SystemAccentColorLight3">#F88C8F</Color>
-        <Color x:Key="SystemAccentColorDark1">#67171C</Color>
-        <Color x:Key="SystemAccentColorDark2">#7B1A20</Color>
-        <Color x:Key="SystemAccentColorDark3">#8F1D24</Color>
+        <Color x:Key="SystemAccentColorDark1">#ff4949</Color>
+        <Color x:Key="SystemAccentColorDark2">#ff5549</Color>
+        <Color x:Key="SystemAccentColorDark3">#ff6149</Color>
+        <Color x:Key="SystemAccentColorLight1">#992b2b</Color>
+        <Color x:Key="SystemAccentColorLight2">#bf3535</Color>
+        <Color x:Key="SystemAccentColorLight3">#e53f3f</Color>
         <!-- <FontFamily x:Key="ContentControlThemeFontFamily" FamilyNames=""></FontFamily> -->
     </Application.Resources>
 
