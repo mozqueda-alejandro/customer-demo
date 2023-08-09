@@ -9,7 +9,6 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using CustomerDemo.Messages;
 using CustomerDemo.Models;
 using CustomerDemo.Services;
 using FluentAvalonia.UI.Data;
@@ -19,8 +18,6 @@ namespace CustomerDemo.ViewModels;
 
 public partial class ClientsViewModel : ViewModelBase
 {
-    private readonly IMessenger _messenger;
-    
     private List<Client> _clients = new();
     
     [ObservableProperty]
@@ -35,11 +32,11 @@ public partial class ClientsViewModel : ViewModelBase
     }
 
     #region Constructors
-    // public ClientsViewModel() { }
+    public ClientsViewModel() { }
     
-    public ClientsViewModel()
+    public ClientsViewModel(CimentalContext context)
     {
-        WeakReferenceMessenger.Default.Register<EditClientMessage>(this, (r, m) => EditClient(m.Value));
+        _context = context;
     }
 
     #endregion
@@ -71,9 +68,20 @@ public partial class ClientsViewModel : ViewModelBase
                                                                                    c.Phone.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase)));
         }
     }
+    
+    [RelayCommand]
+    private async void AddClient(Client client)
+    {
+        _context.Clients.Add(client);
+        await _context.SaveChangesAsync();
+        _clients.Add(client);
+        FilteredClients.Add(client);
+    }
 
+    [RelayCommand]
     private void EditClient(object client)
     {
+        var clientToEdit = (Client)client;
         
     }
     

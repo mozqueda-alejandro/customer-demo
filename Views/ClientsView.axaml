@@ -2,6 +2,8 @@
     x:Class="CustomerDemo.Views.ClientsView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+    xmlns:iac="clr-namespace:Avalonia.Xaml.Interactions.Custom;assembly=Avalonia.Xaml.Interactions.Custom"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:FluentAvalonia.UI.Controls"
@@ -17,9 +19,6 @@
     </Design.DataContext>
 
     <UserControl.Styles>
-        <Style Selector="Button /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="CornerRadius" Value="18"></Setter>
-        </Style>
         <Style Selector="Button">
             <Setter Property="BorderBrush" Value="Transparent"></Setter>
         </Style>
@@ -44,9 +43,51 @@
         <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
+        
+        <!-- <Style Selector="DataGridRow:selected"> -->
+        <!--     <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}"/> -->
+        <!--     <Setter Property="Opacity" Value="0"/> -->
+        <!-- </Style> -->
+        
+        <!-- <Style Selector="DataGridRow:pointerover"> -->
+        <!--     <Setter Property="Background" Value="Transparent"/> -->
+        <!-- </Style> -->
+        <!-- -->
+        <!-- <Style Selector="DataGridRow:pressed"> -->
+        <!--     <Setter Property="Background" Value="Transparent"/> -->
+        <!-- </Style> -->
+        
+        <Style Selector="DataGridRow">
+            <Setter Property="Theme" Value="{StaticResource DataGridRowSelected}"/>
+        </Style>
+        
+        <!-- <Style Selector="DataGridRow:pointerover"> -->
+        <!--     <Setter Property="Background" Value="blue"/> -->
+        <!-- </Style> -->
+        
+        <!-- <Style Selector="MenuItem"> -->
+        <!--     <Setter Property="(Interaction.Behaviors)"> -->
+        <!--         <BehaviorCollectionTemplate> -->
+        <!--             <BehaviorCollection> -->
+        <!--                 <iac:RoutedEventTriggerBehavior RoutedEvent="{x:Static InputElement.PointerEnteredEvent}"  -->
+        <!--                                                 RoutingStrategies="Tunnel"> -->
+        <!--                     <ia:ChangePropertyAction TargetObject="ClientsGrid"  -->
+        <!--                                              PropertyName="SelectedItem" -->
+        <!--                                              Value="{Binding}" /> -->
+        <!--                 </iac:RoutedEventTriggerBehavior> -->
+        <!--                 <iac:RoutedEventTriggerBehavior RoutedEvent="{x:Static InputElement.PointerExitedEvent}"  -->
+        <!--                                                 RoutingStrategies="Tunnel"> -->
+        <!--                     <ia:ChangePropertyAction TargetObject="ClientsGrid"  -->
+        <!--                                              PropertyName="SelectedItem" -->
+        <!--                                              Value="{x:Null}" /> -->
+        <!--                 </iac:RoutedEventTriggerBehavior> -->
+        <!--             </BehaviorCollection> -->
+        <!--         </BehaviorCollectionTemplate> -->
+        <!--     </Setter> -->
+        <!-- </Style> -->
     </UserControl.Styles>
 
-    <Grid 
+    <Grid
         ColumnDefinitions="108,*,108"
         RowDefinitions="84,Auto,24,Auto,24,*,84">
         <Grid 
@@ -67,12 +108,14 @@
             <Button
                 Grid.Column="3"
                 Classes="accent"
-                
+                Click="AddClient_OnClick"
                 Content="Add Client"
                 FontWeight="SemiBold"/>
         </Grid>
         
-        <StackPanel Grid.Row="3" Grid.Column="1"
+        <StackPanel 
+            Grid.Row="3"
+            Grid.Column="1"
             Margin="0,0,0,0"
             Orientation="Horizontal">
             <TextBox
@@ -94,79 +137,81 @@
             
             <Label 
                 Content="clients found"
+                Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                 VerticalAlignment="Center"/>
         </StackPanel>
-
-        <!-- <Border Grid.Row="5" Grid.Column="1" -->
-        <!--     > -->
-            <DataGrid Grid.Row="5" Grid.Column="1"
-                      Name="ClientGrid"
-                      AutoGenerateColumns="False"
-                      Focusable="False"
-                      IsReadOnly="True"
-                      ItemsSource="{Binding FilteredClients}"
-                      RowHeight="42"
-                      SelectionChanged="DataGrid_SelectionChanged"
-                      SelectionMode="Single">
+        
+        
+        
+        <DataGrid 
+            Grid.Row="5" Grid.Column="1"
+            Name="ClientsGrid"
+            AutoGenerateColumns="False"
+            Focusable="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding FilteredClients}"
+            RowHeight="42"
+            SelectionChanged="DataGrid_SelectionChanged"
+            SelectionMode="Single">
+            
+            <DataGrid.Styles>
+                <Style Selector="DataGridCell">
+                    <Setter Property="FontSize" Value="14"/>
+                </Style>
                 
-                <DataGrid.Styles>
-                    <Style Selector="DataGridCell">
-                        <Setter Property="FontSize" Value="14"/>
-                    </Style>
-                </DataGrid.Styles>
-                
-                <DataGrid.Resources>
-                    <!-- <MenuFlyout x:Key="ClientRowMenuFlyout"  -->
-                    <!--             ShowMode="TransientWithDismissOnPointerMoveAway"> -->
-                    <!--     <MenuItem Header="View" /> -->
-                    <!--     <MenuItem Header="Edit" /> -->
-                    <!--     <MenuItem Header="Print" /> -->
-                    <!--     <Separator /> -->
-                    <!--     <MenuItem Header="Send" /> -->
-                    <!--     <MenuItem Header="Export as PDF" /> -->
-                    <!--     <Separator /> -->
-                    <!--     <MenuItem Header="Delete" -->
-                    <!--               Command="{Binding Path=DataContext.DeleteClientCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" -->
-                    <!--               Foreground="{DynamicResource SystemFillColorCriticalBrush}"/> -->
-                    <!-- </MenuFlyout> -->
-                </DataGrid.Resources>
-                
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" Width="*" />
-                    <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" Width="*"/>
-                    <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="*" />
-                    <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" Width="*" />
-                    <DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="*" />
-                    <!-- <DataGridTextColumn Binding="{Binding SourceId}" Header="Source" Width="*" /> -->
-                    <DataGridTemplateColumn Width="Auto">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate DataType="viewModels:ClientsViewModel">
-                                <Button>
-                                    <Button.Flyout>
-                                        <MenuFlyout Placement="BottomEdgeAlignedRight"
-                                                    ShowMode="TransientWithDismissOnPointerMoveAway">
-                                            <MenuItem Header="View" 
-                                                      Click="MenuItemView_OnClick"/>
-                                            <MenuItem Header="Edit" />
-                                            <MenuItem Header="Print" />
-                                            <Separator />
-                                            <MenuItem Header="Send" />
-                                            <MenuItem Header="Export as PDF" />
-                                            <Separator />
-                                            <MenuItem Header="Delete"
-                                                      Command="{ReflectionBinding #root.DataContext.DeleteClientCommand}"
-                                                      CommandParameter="{Binding}"
-                                                      Foreground="{DynamicResource SystemFillColorCriticalBrush}"/>
-                                        </MenuFlyout>
-                                    </Button.Flyout>
-                                    <ui:SymbolIcon Symbol="ChevronDown" />
-                                </Button>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        <!-- </Border> -->
+                <Style Selector="DataGridColumnHeader">
+                    <Setter Property="Theme" Value="{StaticResource BodyStrongTextBlockStyle}"/>
+                </Style>
+            </DataGrid.Styles>
+            
+            <DataGrid.Resources>
+                <MenuFlyout
+                    x:Key="ClientMenuFlyout"
+                    Placement="BottomEdgeAlignedRight"
+                    ShowMode="TransientWithDismissOnPointerMoveAway" >
+                    <MenuItem
+                        Header="View"
+                        CommandParameter="{Binding}"
+                        PointerEntered="MenuFlyout_OnPointerEntered"
+                        PointerExited="MenuFlyout_OnPointerExited" />
+                    <MenuItem 
+                        Header="Edit"
+                        Click="EditMenuItem_OnClick"
+                        CommandParameter="{Binding}"
+                        PointerEntered="MenuFlyout_OnPointerEntered"
+                        PointerExited="MenuFlyout_OnPointerExited" />
+                    <Separator></Separator>
+                    <MenuItem
+                        Header="Delete"
+                        Command="{ReflectionBinding #root.DataContext.DeleteClientCommand}"
+                        CommandParameter="{Binding}"
+                        Foreground="{DynamicResource SystemFillColorCriticalBrush}"
+                        PointerEntered="MenuFlyout_OnPointerEntered"
+                        PointerExited="MenuFlyout_OnPointerExited" />
+                </MenuFlyout>
+            </DataGrid.Resources>
+            
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding FirstName}" Header="First Name" Width="*" />
+                <DataGridTextColumn Binding="{Binding LastName}" Header="Last Name" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Email}" Header="Email" Width="*" />
+                <DataGridTextColumn Binding="{Binding Phone}" Header="Phone" Width="*" />
+                <DataGridTextColumn Binding="{Binding Address}" Header="Address" Width="*" />
+                <DataGridTemplateColumn Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate DataType="viewModels:ClientsViewModel">
+                            <Button 
+                                Flyout="{StaticResource ClientMenuFlyout}"
+                                ClipToBounds="True"
+                                CornerRadius="10"
+                                ZIndex="1">
+                                <ui:SymbolIcon Symbol="ChevronDown" />
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 
 </UserControl>

@@ -34,11 +34,31 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
+     <Window.Styles>
+         <Style Selector="AutoCompleteBox.SampleApp /template/ TextBox#PART_TextBox">
+             <Setter Property="InnerRightContent">
+                 <Template>
+                     <StackPanel Orientation="Horizontal">
+                         <Button Content="&#xE8BB;"
+                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                 Theme="{StaticResource TransparentButton}"
+                                 Command="{Binding $parent[TextBox].Clear}"
+                                 IsVisible="{Binding Text, RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"/>
+                         <Button Content="&#xE721;"
+                                 FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                 Theme="{StaticResource TransparentButton}"
+                                 Command="{Binding $parent[TextBox].Clear}"
+                                 IsHitTestVisible="False"/>
+                     </StackPanel>
+                 </Template>
+             </Setter>
+         </Style>
+     </Window.Styles>
 
     <Grid RowDefinitions="Auto,*">
-        <Grid />
         <ui:NavigationView
-            x:Name="NavigationViewControl"
+            Name="NavigationViewControl"
             Grid.Row="0"
             Grid.RowSpan="2"
             AlwaysShowHeader="False"
@@ -47,78 +67,121 @@
             IsSettingsVisible="False"
             OpenPaneLength="264"
             PaneDisplayMode="Left">
+            
+            <ui:NavigationView.ContentOverlay>
+                <Grid Name="TitleBarHost" 
+                      ColumnDefinitions="Auto,Auto,*,Auto" 
+                      Background="Transparent">
+                    <Image Margin="48,6,12,4"
+                           IsHitTestVisible="False"
+                           Source="/Assets/cimental-masonry-logo.ico"
+                           Width="18" Height="18"
+                           DockPanel.Dock="Left"
+                           Name="WindowIcon"
+                           RenderOptions.BitmapInterpolationMode="HighQuality">
+                        <Image.IsVisible>
+                            <OnPlatform Default="False">
+                                <On Options="Windows" Content="True" />
+                            </OnPlatform>
+                        </Image.IsVisible>
+                    </Image>
+
+                    <TextBlock Text="Cimental Masonry"
+                               FontSize="12"
+                               FontWeight="DemiBold"
+                               IsHitTestVisible="False"
+                               VerticalAlignment="Center"
+                               Grid.Column="1">
+                        <TextBlock.IsVisible>
+                            <OnPlatform Default="False">
+                                <On Options="Windows" Content="True" />
+                            </OnPlatform>
+                        </TextBlock.IsVisible>
+                    </TextBlock>
+                    
+                    <Border Grid.Column="2" Padding="6">
+                        <AutoCompleteBox Name="SearchBox"
+                                         MaxWidth="400"
+                                         Watermark="Search"
+                                         Classes="SampleApp">
+                            
+                        </AutoCompleteBox>
+                    </Border>
+                </Grid>
+            </ui:NavigationView.ContentOverlay>
+            
             <ui:NavigationView.MenuItems>
-                <!--  x:Name attributes must be in the form "UserControlView"  -->
+                <!--  Name attributes must be in the form "UserControlView"  -->
                 <ui:NavigationViewItem
-                    x:Name="HomeView"
+                    Name="HomeView"
                     Content="Home"
                     IconSource="Home" />
                 <ui:NavigationViewItemSeparator />
                 <ui:NavigationViewItem
-                    x:Name="DashboardView"
+                    Name="DashboardView"
                     Content="Dashboard"
                     IconSource="ViewAll" />
 
                 <ui:NavigationViewItem
-                    x:Name="Sales"
+                    Name="Sales"
                     Content="Sales and Payments"
                     IconSource="{StaticResource PaymentCardIcon}"
                     SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem x:Name="EstimatesView" Content="Estimates" />
-                        <ui:NavigationViewItem x:Name="InvoicesView" Content="Invoices" />
-                        <ui:NavigationViewItem x:Name="ClientsView" Content="Clients" />
-                        <ui:NavigationViewItem x:Name="InventoryView" Content="Inventory" />
+                        <ui:NavigationViewItem Name="EstimatesView" Content="Estimates" />
+                        <ui:NavigationViewItem Name="InvoicesView" Content="Invoices" />
+                        <ui:NavigationViewItem Name="ClientsView" Content="Clients" />
+                        <ui:NavigationViewItem Name="InventoryView" Content="Inventory" />
                     </ui:NavigationViewItem.MenuItems>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem
-                    x:Name="Purchases"
+                    Name="Purchases"
                     Content="Purchases"
                     IconSource="{StaticResource ShoppingCartIcon}"
                     SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem x:Name="BillsView" Content="Bills" />
-                        <ui:NavigationViewItem x:Name="VendorsView" Content="Vendors" />
+                        <ui:NavigationViewItem Name="BillsView" Content="Bills" />
+                        <ui:NavigationViewItem Name="VendorsView" Content="Vendors" />
                     </ui:NavigationViewItem.MenuItems>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem
-                    x:Name="Accounting"
+                    Name="Accounting"
                     Content="Accounting"
                     IconSource="Library"
                     SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem x:Name="TransactionsView" Content="Transactions" />
-                        <ui:NavigationViewItem x:Name="ChartOfAccountsView" Content="Chart of Accounts" />
+                        <ui:NavigationViewItem Name="TransactionsView" Content="Transactions" />
+                        <ui:NavigationViewItem Name="ChartOfAccountsView" Content="Chart of Accounts" />
                     </ui:NavigationViewItem.MenuItems>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem
-                    x:Name="Payroll"
+                    Name="Payroll"
                     Content="Payroll"
                     IconSource="People"
                     SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
-                        <ui:NavigationViewItem x:Name="EmployeesView" Content="Employees" />
-                        <ui:NavigationViewItem x:Name="TimesheetsView" Content="Timesheets" />
-                        <ui:NavigationViewItem x:Name="TaxFormsView" Content="Tax Forms" />
+                        <ui:NavigationViewItem Name="EmployeesView" Content="Employees" />
+                        <ui:NavigationViewItem Name="TimesheetsView" Content="Timesheets" />
+                        <ui:NavigationViewItem Name="TaxFormsView" Content="Tax Forms" />
                     </ui:NavigationViewItem.MenuItems>
                 </ui:NavigationViewItem>
 
                 <ui:NavigationViewItem
-                    x:Name="ReportsView"
+                    Name="ReportsView"
                     Content="Reports"
                     IconSource="{StaticResource ReportDocumentIcon}" />
             </ui:NavigationView.MenuItems>
 
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItem
-                    x:Name="MaterialLibraryView"
+                    Name="MaterialLibraryView"
                     Content="Material Library"
                     IconSource="{StaticResource ConstructionIcon}" />
                 <ui:NavigationViewItem
-                    x:Name="SettingsView"
+                    Name="SettingsView"
                     Content="Settings"
                     IconSource="Settings" />
             </ui:NavigationView.FooterMenuItems>

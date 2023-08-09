@@ -32,13 +32,18 @@ public partial class App : Application
         services.AddSingleton<EstimatesViewModel>();
         services.AddSingleton<ClientsViewModel>();
         services.AddSingleton<ClientsView>();
-        services.AddTransient<NewClientViewModel>();
         services.AddSingleton<VendorsViewModel>();
         services.AddSingleton<SettingsViewModel>();
         
+        // Testing
+        services.AddSingleton<ClientFormEditViewModel>();
+        services.AddSingleton<IDialogService, DialogService>();
+        services.AddSingleton<ClientsView>();
+        
+        services.AddSingleton<CimentalContext>();
+        
         services.AddSingleton<IMessenger, WeakReferenceMessenger>();
         services.AddSingleton<INavigationService, NavigationService>();
-        services.AddSingleton<IMyDependency, MyDependency>();
         
         services.AddSingleton<Func<Type, ViewModelBase>>(serviceProvider =>
             viewModelType => (ViewModelBase)serviceProvider.GetRequiredService(viewModelType));
@@ -47,10 +52,8 @@ public partial class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            desktop.MainWindow = mainWindow;
-            await Task.Delay(1);
-            mainWindow.SetMenuItemExpansion(false);
+            desktop.MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            desktop.MainWindow.Loaded += (sender, _) => ((MainWindow)sender!).SetMenuItemExpansion(false);
         }
 
         base.OnFrameworkInitializationCompleted();

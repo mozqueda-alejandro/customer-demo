@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Class="CustomerDemo.Views.ClientFormView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:CustomerDemo.ViewModels"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="viewModels:IClientFormViewModel"
+    mc:Ignorable="d">
+
+    <Grid 
+        ColumnDefinitions="*,208,16,208,*" 
+        Row="1"
+        Margin="0,16,0,16">
+        <StackPanel Grid.Column="1" Orientation="Vertical">
+            
+            <StackPanel.Styles>
+                <!-- <Style> -->
+                <!--     <Setter Property="TextBox.Foreground" Value=""></Setter> -->
+                <!-- </Style> -->
+            </StackPanel.Styles>
+            
+            <TextBlock Margin="0,0,0,4" Text=" First Name" />
+            <TextBox Text="{Binding FirstName}"/>
+
+            <TextBlock Margin="0,32,0,4" Text=" Last Name" />
+            <TextBox Text="{Binding LastName}" />
+
+            <TextBlock Margin="0,32,0,4" Text=" Address" />
+            <TextBox Text="{Binding Address}" />
+        </StackPanel>
+        <StackPanel Grid.Column="3" Orientation="Vertical">
+            <TextBlock Margin="0,0,0,4" Text=" Email" />
+            <TextBox Text="{Binding Email}" />
+
+            <TextBlock Margin="0,32,0,4" Text=" Phone" />
+            <MaskedTextBox
+                Text="{Binding Phone}"
+                Mask="(000) 000-0000"/>
+
+            <TextBlock Margin="0,32,0,4" Text=" Source" />
+            <TextBox Text="{Binding Source}" />
+            <!-- <ComboBox Width="192" Margin="0,0,0,32"> -->
+            <!--     <ComboBoxItem Content="Website"/> -->
+            <!--     <ComboBoxItem Content="Referral"/> -->
+            <!--     <ComboBoxItem Content="Advertisement"/> -->
+            <!--     <ComboBoxItem Content="Other"/> -->
+            <!-- </ComboBox> -->
+        </StackPanel>
+    </Grid>
+</UserControl>

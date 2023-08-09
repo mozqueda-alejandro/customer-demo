@@ -48,6 +48,8 @@ public partial class MainWindow : AppWindow
     public MainWindow(MainWindowViewModel viewModel)
     {
         InitializeComponent();
+        TitleBar.ExtendsContentIntoTitleBar = true;
+        TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
 #if DEBUG
         this.AttachDevTools();
 #endif

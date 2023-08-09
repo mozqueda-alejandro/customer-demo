@@ -8,18 +8,16 @@
     xmlns:views="clr-namespace:CustomerDemo.Views">
 
     <Application.Styles>
-        <!-- <FluentTheme Mode="Dark"/> -->
         <sty:FluentAvaloniaTheme />
     </Application.Styles>
 
     <Application.Resources>
-        <Color x:Key="SystemAccentColor">#525053</Color>
-        <Color x:Key="SystemAccentColorDark1">#ff4949</Color>
-        <Color x:Key="SystemAccentColorDark2">#ff5549</Color>
-        <Color x:Key="SystemAccentColorDark3">#ff6149</Color>
-        <Color x:Key="SystemAccentColorLight1">#992b2b</Color>
-        <Color x:Key="SystemAccentColorLight2">#bf3535</Color>
-        <Color x:Key="SystemAccentColorLight3">#e53f3f</Color>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="Styling/Resources.axaml"></ResourceInclude>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
         <!-- <FontFamily x:Key="ContentControlThemeFontFamily" FamilyNames=""></FontFamily> -->
     </Application.Resources>
 
@@ -41,10 +39,6 @@
             <views:ClientsView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModels:NewClientViewModel}">
-            <views:NewClientView />
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewModels:VendorsViewModel}">
             <views:VendorsView />
         </DataTemplate>
@@ -52,11 +46,21 @@
         <DataTemplate DataType="{x:Type viewModels:SettingsViewModel}">
             <views:SettingsView />
         </DataTemplate>
-
+        
+        <!-- Testing -->
+        <DataTemplate DataType="{x:Type viewModels:ClientFormEditViewModel}">
+            <views:ClientFormView />
+        </DataTemplate>
+        
+        
         <!--  Display Fluent icons  -->
         <!--  <ui:FontIcon Glyph="&#xE10B;" FontFamily="{StaticResource SymbolThemeFontFamily}"  -->
         <!--  FontSize="24"/>  -->
         <!-- <ui:SymbolIcon Symbol="Find" FontSize="24"/> -->
 
     </Application.DataTemplates>
+    
+    <Application.Styles>
+        <sty:FluentAvaloniaTheme PreferSystemTheme="True" PreferUserAccentColor="True"/>
+    </Application.Styles>
 </Application>
