@@ -19,6 +19,7 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="11.0.0" />
         <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0" />
@@ -28,7 +29,8 @@
         <PackageReference Include="Avalonia.Xaml.Interactions.Responsive" Version="11.0.2" />
         <PackageReference Include="Avalonia.Xaml.Interactivity" Version="11.0.2" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
-        <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-rc1" />
+        <PackageReference Include="CsvHelper" Version="30.0.1" />
+        <PackageReference Include="FluentAvaloniaUI" Version="2.0.1" />
         <PackageReference Include="FluentValidation" Version="11.6.0" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-beta.860" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0-preview.6.23329.4" />
@@ -46,12 +48,10 @@
 
     <ItemGroup>
       <AvaloniaXaml Remove="Views\test.axaml" />
-      <AvaloniaXaml Remove="Views\JobsView.axaml" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="Views\test.axaml.cs" />
-      <Compile Remove="Views\JobsView.axaml.cs" />
     </ItemGroup>
 
     <ItemGroup>

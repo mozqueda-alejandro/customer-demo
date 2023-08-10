@@ -29,6 +29,7 @@ public partial class App : Application
 
         services.AddSingleton<HomeViewModel>();
         services.AddSingleton<DashboardViewModel>();
+        services.AddSingleton<JobsViewModel>();
         services.AddSingleton<EstimatesViewModel>();
         services.AddSingleton<ClientsViewModel>();
         services.AddSingleton<ClientsView>();
@@ -53,7 +54,6 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            desktop.MainWindow.Loaded += (sender, _) => ((MainWindow)sender!).SetMenuItemExpansion(false);
         }
 
         base.OnFrameworkInitializationCompleted();

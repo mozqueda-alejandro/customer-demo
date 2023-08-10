@@ -30,6 +30,10 @@
         <DataTemplate DataType="{x:Type viewModels:DashboardViewModel}">
             <views:DashboardView />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:JobsViewModel}">
+            <views:JobsView />
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:EstimatesViewModel}">
             <views:EstimatesView />

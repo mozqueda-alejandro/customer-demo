@@ -6,6 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:FluentAvalonia.UI.Controls"
     xmlns:vm="using:CustomerDemo.ViewModels"
+    xmlns:services="clr-namespace:CustomerDemo.Services"
     x:Name="MainWindowControl"
     Title="Customer Demo"
     d:DesignHeight="450"
@@ -13,17 +14,13 @@
     x:DataType="vm:MainWindowViewModel"
     Focusable="True"
     Icon="/Assets/cimental-masonry-logo.ico"
-    MinHeight="450"
+    MinHeight="500"
     MinWidth="800"
     PointerPressed="MainWindow_OnPointerPressed"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
     <Design.DataContext>
-        <!--
-            This only sets the DataContext for the previewer in an IDE,
-            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
-        -->
         <vm:MainWindowViewModel />
     </Design.DataContext>
 
@@ -54,6 +51,7 @@
                  </Template>
              </Setter>
          </Style>
+         
      </Window.Styles>
 
     <Grid RowDefinitions="Auto,*">
@@ -62,61 +60,58 @@
             Grid.Row="0"
             Grid.RowSpan="2"
             AlwaysShowHeader="False"
-            Content="{Binding NavigationService.CurrentView}"
             IsBackButtonVisible="True"
             IsSettingsVisible="False"
             OpenPaneLength="264"
-            PaneDisplayMode="Left">
+            PaneDisplayMode="Left" >
             
-            <ui:NavigationView.ContentOverlay>
-                <Grid Name="TitleBarHost" 
-                      ColumnDefinitions="Auto,Auto,*,Auto" 
-                      Background="Transparent">
-                    <Image Margin="48,6,12,4"
-                           IsHitTestVisible="False"
-                           Source="/Assets/cimental-masonry-logo.ico"
-                           Width="18" Height="18"
-                           DockPanel.Dock="Left"
-                           Name="WindowIcon"
-                           RenderOptions.BitmapInterpolationMode="HighQuality">
-                        <Image.IsVisible>
-                            <OnPlatform Default="False">
-                                <On Options="Windows" Content="True" />
-                            </OnPlatform>
-                        </Image.IsVisible>
-                    </Image>
-
-                    <TextBlock Text="Cimental Masonry"
-                               FontSize="12"
-                               FontWeight="DemiBold"
-                               IsHitTestVisible="False"
-                               VerticalAlignment="Center"
-                               Grid.Column="1">
-                        <TextBlock.IsVisible>
-                            <OnPlatform Default="False">
-                                <On Options="Windows" Content="True" />
-                            </OnPlatform>
-                        </TextBlock.IsVisible>
-                    </TextBlock>
-                    
-                    <Border Grid.Column="2" Padding="6">
-                        <AutoCompleteBox Name="SearchBox"
-                                         MaxWidth="400"
-                                         Watermark="Search"
-                                         Classes="SampleApp">
-                            
-                        </AutoCompleteBox>
-                    </Border>
+            <ui:NavigationView.Content>
+                <Grid ColumnDefinitions="*">
+                    <ContentControl Content="{Binding NavigationService.CurrentView}"></ContentControl>
                 </Grid>
-            </ui:NavigationView.ContentOverlay>
+            </ui:NavigationView.Content>
+            
+            <!-- <ui:NavigationView.ContentOverlay> -->
+            <!--     <Grid Name="TitleBarHost" -->
+            <!--           ColumnDefinitions="Auto,Auto,*,Auto" -->
+            <!--           Background="Transparent"> -->
+            <!--         <Image -->
+            <!--             DockPanel.Dock="Left" -->
+            <!--             Margin="48,6,12,4" -->
+            <!--             IsHitTestVisible="False" -->
+            <!--             Source="/Assets/cimental-masonry-logo.ico" -->
+            <!--             Width="18" Height="18" -->
+            <!--             RenderOptions.BitmapInterpolationMode="HighQuality"> -->
+            <!--         </Image> -->
+            <!-- -->
+            <!--         <TextBlock Text="Cimental Masonry" -->
+            <!--                    FontSize="12" -->
+            <!--                    FontWeight="DemiBold" -->
+            <!--                    IsHitTestVisible="False" -->
+            <!--                    VerticalAlignment="Center" -->
+            <!--                    Grid.Column="1"> -->
+            <!--             <TextBlock.IsVisible> -->
+            <!--                 <OnPlatform Default="False"> -->
+            <!--                     <On Options="Windows" Content="True" /> -->
+            <!--                 </OnPlatform> -->
+            <!--             </TextBlock.IsVisible> -->
+            <!--         </TextBlock> -->
+            <!-- -->
+            <!--         <Border Grid.Column="2" Padding="6"> -->
+            <!--             <AutoCompleteBox  -->
+            <!--                 Name="SearchBox" -->
+            <!--                 MaxWidth="400" -->
+            <!--                 Watermark="Search" -->
+            <!--                 Classes="SampleApp"> -->
+            <!-- -->
+            <!--             </AutoCompleteBox> -->
+            <!--         </Border> -->
+            <!--     </Grid> -->
+            <!-- </ui:NavigationView.ContentOverlay> -->
             
             <ui:NavigationView.MenuItems>
                 <!--  Name attributes must be in the form "UserControlView"  -->
-                <ui:NavigationViewItem
-                    Name="HomeView"
-                    Content="Home"
-                    IconSource="Home" />
-                <ui:NavigationViewItemSeparator />
+
                 <ui:NavigationViewItem
                     Name="DashboardView"
                     Content="Dashboard"
@@ -124,10 +119,11 @@
 
                 <ui:NavigationViewItem
                     Name="Sales"
-                    Content="Sales and Payments"
-                    IconSource="{StaticResource PaymentCardIcon}"
+                    Content="Job Management"
+                    IconSource="{StaticResource ConstructionIcon}"
                     SelectsOnInvoked="False">
                     <ui:NavigationViewItem.MenuItems>
+                        <ui:NavigationViewItem Name="JobsView" Content="Jobs"/>
                         <ui:NavigationViewItem Name="EstimatesView" Content="Estimates" />
                         <ui:NavigationViewItem Name="InvoicesView" Content="Invoices" />
                         <ui:NavigationViewItem Name="ClientsView" Content="Clients" />
@@ -172,7 +168,7 @@
                 <ui:NavigationViewItem
                     Name="ReportsView"
                     Content="Reports"
-                    IconSource="{StaticResource ReportDocumentIcon}" />
+                    IconSource="{StaticResource AreaChartIcon}" />
             </ui:NavigationView.MenuItems>
 
             <ui:NavigationView.FooterMenuItems>

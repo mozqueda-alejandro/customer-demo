@@ -37,8 +37,8 @@ public class MenuItemContainer
 
 public partial class MainWindow : AppWindow
 {
-    private MainWindowViewModel ViewModel { get; }
-    private NavigationView NavigationView { get; }
+    private MainWindowViewModel _viewModel;
+    private NavigationView _navigationView;
     private Dictionary<string, IRelayCommand> NavigationCommands { get; } = new();
     private Dictionary<string, MenuItemContainer> NavigationItems { get; } = new();
     private HashSet<string> ParentNavigationItemNames { get; } = new();
@@ -48,30 +48,29 @@ public partial class MainWindow : AppWindow
     public MainWindow(MainWindowViewModel viewModel)
     {
         InitializeComponent();
-        TitleBar.ExtendsContentIntoTitleBar = true;
-        TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
+        TitleBar.ExtendsContentIntoTitleBar = false;
+        // TitleBar.TitleBarHitTestType = TitleBarHitTestType.Complex;
 #if DEBUG
         this.AttachDevTools();
 #endif
         
-        ViewModel = viewModel;
-        NavigationView = this.FindControl<NavigationView>("NavigationViewControl")!;
-        DataContext = ViewModel;
+        _viewModel = viewModel;
+        _navigationView = this.FindControl<NavigationView>("NavigationViewControl")!;
+        DataContext = _viewModel;
 
         InitNavigationCommands();
         InitNavigationItems();
 
-        ViewModel.NavigationService.PropertyChanged += NavigationService_OnPropertyChanged;
-        NavigationView.SelectionChanged += OnMenuItemChanged;
-        NavigationView.BackRequested += OnBackRequested;
-        NavigationView.SelectedItem = NavigationView.MenuItems.ElementAt(0);
+        _viewModel.NavigationService.PropertyChanged += NavigationService_OnPropertyChanged;
+        _navigationView.SelectionChanged += OnMenuItemChanged;
+        _navigationView.BackRequested += OnBackRequested;
+        _navigationView.SelectedItem = _navigationView.MenuItems.ElementAt(0);
 
         SetMenuItemExpansion(true);
-        NavigationView.IsBackEnabled = false;
+        _navigationView.IsBackEnabled = false;
+        Loaded += (sender, _) => ((MainWindow)sender!).SetMenuItemExpansion(false);
     }
     
-    
-
     private void NavigationService_OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (sender is not INavigationService navigationService) return;
@@ -88,14 +87,14 @@ public partial class MainWindow : AppWindow
 
     private void OnCurrentViewChanged()
     {
-        var prevSelectionName = ((NavigationViewItem)NavigationView.SelectedItem).Name;
-        if (prevSelectionName == ViewModel.NavigationService.CurrentViewName) return; // Prevents item from being reselected
+        var prevSelectionName = ((NavigationViewItem)_navigationView.SelectedItem).Name;
+        if (prevSelectionName == _viewModel.NavigationService.CurrentViewName) return; // Prevents item from being reselected
         
-        var wasPaneExpanded = NavigationView.IsPaneOpen;
-        NavigationView.IsPaneOpen = true;
+        var wasPaneExpanded = _navigationView.IsPaneOpen;
+        _navigationView.IsPaneOpen = true;
         SetMenuItemExpansion(true);
 
-        if (!NavigationItems.TryGetValue(ViewModel.NavigationService.CurrentViewName, out var menuItemContainer)) return;
+        if (!NavigationItems.TryGetValue(_viewModel.NavigationService.CurrentViewName, out var menuItemContainer)) return;
         if (menuItemContainer.HasParent)
         {
             var parent = this.FindControl<NavigationViewItem>(menuItemContainer.ParentName)!;
@@ -103,7 +102,7 @@ public partial class MainWindow : AppWindow
         }
         
         var newSelection = menuItemContainer.MenuItem;
-        NavigationView.SelectedItem = newSelection;
+        _navigationView.SelectedItem = newSelection;
         newSelection.IsSelected = true;
 
         // If previous selection has a parent, and if new selection's parent is not the same,
@@ -119,15 +118,15 @@ public partial class MainWindow : AppWindow
         }
 
         SetMenuItemExpansion(false);
-        NavigationView.IsPaneOpen = wasPaneExpanded;
+        _navigationView.IsPaneOpen = wasPaneExpanded;
     }
 
     private void OnMenuItemChanged(object? sender, NavigationViewSelectionChangedEventArgs e)
     {
         if (e.SelectedItem is not NavigationViewItem selectedItem) return;
-        if (ViewModel.NavigationService.CurrentView != null)
+        if (_viewModel.NavigationService.CurrentView != null)
         {
-            if (selectedItem.Name == ViewModel.NavigationService.CurrentViewName) return; // Prevents navigation to same view
+            if (selectedItem.Name == _viewModel.NavigationService.CurrentViewName) return; // Prevents navigation to same view
         }
         
         if (NavigationCommands.TryGetValue(selectedItem.Name!, out var navigationCommand))
@@ -138,11 +137,11 @@ public partial class MainWindow : AppWindow
 
     private void OnCanNavigateBackChanged()
     {
-        NavigationView.IsBackEnabled = ViewModel.NavigationService.CanNavigateBack;
+        _navigationView.IsBackEnabled = _viewModel.NavigationService.CanNavigateBack;
     }
 
     private void OnBackRequested(object? sender, NavigationViewBackRequestedEventArgs e) =>
-        ViewModel.NavigateBackCommand.Execute(null);
+        _viewModel.NavigateBackCommand.Execute(null);
 
     public void SetMenuItemExpansion(bool isExpanded)
     {
@@ -156,17 +155,18 @@ public partial class MainWindow : AppWindow
 
     private void InitNavigationCommands()
     {
-        NavigationCommands.Add(nameof(HomeView), ViewModel.NavigateToHomeCommand);
-        NavigationCommands.Add(nameof(DashboardView), ViewModel.NavigateToDashboardCommand);
-        NavigationCommands.Add(nameof(EstimatesView), ViewModel.NavigateToEstimatesCommand);
-        NavigationCommands.Add(nameof(ClientsView), ViewModel.NavigateToClientsCommand);
-        NavigationCommands.Add(nameof(VendorsView), ViewModel.NavigateToVendorsCommand);
-        NavigationCommands.Add(nameof(SettingsView), ViewModel.NavigateToSettingsCommand);
+        NavigationCommands.Add(nameof(HomeView), _viewModel.NavigateToHomeCommand);
+        NavigationCommands.Add(nameof(DashboardView), _viewModel.NavigateToDashboardCommand);
+        NavigationCommands.Add(nameof(JobsView), _viewModel.NavigateToJobsCommand);
+        NavigationCommands.Add(nameof(EstimatesView), _viewModel.NavigateToEstimatesCommand);
+        NavigationCommands.Add(nameof(ClientsView), _viewModel.NavigateToClientsCommand);
+        NavigationCommands.Add(nameof(VendorsView), _viewModel.NavigateToVendorsCommand);
+        NavigationCommands.Add(nameof(SettingsView), _viewModel.NavigateToSettingsCommand);
     }
 
     private void InitNavigationItems()
     {
-        foreach (var menuItem in NavigationView.MenuItems)
+        foreach (var menuItem in _navigationView.MenuItems)
         {
             if (menuItem is not NavigationViewItem navigationViewItem) continue;
             
@@ -184,16 +184,12 @@ public partial class MainWindow : AppWindow
             }
         }
 
-        foreach (var footerItem in NavigationView.FooterMenuItems)
+        foreach (var footerItem in _navigationView.FooterMenuItems)
         {
             if (footerItem is not NavigationViewItem navigationViewItem) continue;
             NavigationItems.Add(navigationViewItem.Name!, new MenuItemContainer(navigationViewItem, string.Empty));
         }
     }
     
-    private void MainWindow_OnPointerPressed(object? sender, PointerPressedEventArgs e)
-    {
-        var mainWindow = this.FindControl<Window>("MainWindowControl");
-        mainWindow?.Focus();
-    }
+    private void MainWindow_OnPointerPressed(object? sender, PointerPressedEventArgs e) => MainWindowControl?.Focus();
 }

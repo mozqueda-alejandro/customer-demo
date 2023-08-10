@@ -19,51 +19,18 @@
     </Design.DataContext>
 
     <UserControl.Styles>
-        <Style Selector="Button">
-            <Setter Property="BorderBrush" Value="Transparent"></Setter>
-        </Style>
         
-        <Style Selector="DataGridRow">
-            <!--  TODO: change font size  -->
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-
-        <!-- <Style Selector="Button.toolbar"> -->
-        <!--     ~1~ <Setter Property="Margin" Value="9,3,9,3"/> @1@ -->
-        <!--     <Setter Property="Width" Value="36" /> -->
-        <!--     <Setter Property="Height" Value="36" /> -->
-        <!--     <Setter Property="BorderThickness" Value="2" /> -->
-        <!--     <Setter Property="BorderBrush" Value="{DynamicResource ThemeAccentBrush}" /> -->
-        <!--     <Setter Property="Background" Value="Transparent" /> -->
-        <!--     ~1~ <Setter Property="Padding" Value="6"/> @1@ -->
-        <!-- </Style> -->
-        <!-- <Style Selector="Button.toolbar /template/ ContentPresenter"> -->
-        <!--     <Setter Property="CornerRadius" Value="18" /> -->
-        <!-- </Style> -->
         <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
-        
-        <!-- <Style Selector="DataGridRow:selected"> -->
-        <!--     <Setter Property="Background" Value="{DynamicResource ControlFillColorSecondaryBrush}"/> -->
-        <!--     <Setter Property="Opacity" Value="0"/> -->
-        <!-- </Style> -->
-        
-        <!-- <Style Selector="DataGridRow:pointerover"> -->
-        <!--     <Setter Property="Background" Value="Transparent"/> -->
-        <!-- </Style> -->
-        <!-- -->
-        <!-- <Style Selector="DataGridRow:pressed"> -->
-        <!--     <Setter Property="Background" Value="Transparent"/> -->
-        <!-- </Style> -->
         
         <Style Selector="DataGridRow">
             <Setter Property="Theme" Value="{StaticResource DataGridRowSelected}"/>
         </Style>
         
-        <!-- <Style Selector="DataGridRow:pointerover"> -->
-        <!--     <Setter Property="Background" Value="blue"/> -->
-        <!-- </Style> -->
+        <Style Selector="ScrollViewer">
+            <Setter Property="AllowAutoHide" Value="True"/>
+        </Style>
         
         <!-- <Style Selector="MenuItem"> -->
         <!--     <Setter Property="(Interaction.Behaviors)"> -->
@@ -101,6 +68,7 @@
 
             <Button
                 Grid.Column="2"
+                Click="ImportCsv_OnClick"
                 Margin="0,0,12,0"
                 Content="Import from CSV"
                 FontWeight="SemiBold"/>
@@ -139,6 +107,10 @@
                 Content="clients found"
                 Foreground="{DynamicResource TextFillColorTertiaryBrush}"
                 VerticalAlignment="Center"/>
+            
+            <Label Margin="20,0">
+                Words
+            </Label>
         </StackPanel>
         
         
@@ -159,9 +131,29 @@
                     <Setter Property="FontSize" Value="14"/>
                 </Style>
                 
-                <Style Selector="DataGridColumnHeader">
+                <Style Selector="DataGridColumnHeader /template/ ContentPresenter#PART_ContentPresenter">
                     <Setter Property="Theme" Value="{StaticResource BodyStrongTextBlockStyle}"/>
                 </Style>
+                <Style Selector="MenuItem">
+                    <Setter Property="(Interaction.Behaviors)">
+                        <BehaviorCollectionTemplate>
+                            <BehaviorCollection>
+                                <iac:RoutedEventTriggerBehavior RoutedEvent="{x:Static InputElement.PointerEnteredEvent}"
+                                                                RoutingStrategies="Tunnel">
+                                    <ia:ChangePropertyAction TargetObject="ClientsGrid"
+                                                             PropertyName="SelectedItem"
+                                                             Value="{Binding}" />
+                                </iac:RoutedEventTriggerBehavior>
+                                <iac:RoutedEventTriggerBehavior RoutedEvent="{x:Static InputElement.PointerExitedEvent}"
+                                                                RoutingStrategies="Tunnel">
+                                    <ia:ChangePropertyAction TargetObject="ClientsGrid"
+                                                             PropertyName="SelectedItem"
+                                                             Value="{x:Null}" />
+                                </iac:RoutedEventTriggerBehavior>
+                            </BehaviorCollection>
+                        </BehaviorCollectionTemplate>
+                    </Setter>
+                </Style> 
             </DataGrid.Styles>
             
             <DataGrid.Resources>
@@ -173,7 +165,8 @@
                         Header="View"
                         CommandParameter="{Binding}"
                         PointerEntered="MenuFlyout_OnPointerEntered"
-                        PointerExited="MenuFlyout_OnPointerExited" />
+                        PointerExited="MenuFlyout_OnPointerExited"
+                    />
                     <MenuItem 
                         Header="Edit"
                         Click="EditMenuItem_OnClick"
@@ -203,8 +196,9 @@
                             <Button 
                                 Flyout="{StaticResource ClientMenuFlyout}"
                                 ClipToBounds="True"
-                                CornerRadius="10"
-                                ZIndex="1">
+                                CornerRadius="15"
+                                Margin="4,0,6,0"
+                                Width="30">
                                 <ui:SymbolIcon Symbol="ChevronDown" />
                             </Button>
                         </DataTemplate>

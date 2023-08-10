@@ -39,7 +39,7 @@
             <TextBlock Margin="0,32,0,4" Text=" Phone" />
             <MaskedTextBox
                 Text="{Binding Phone}"
-                Mask="(000) 000-0000"/>
+                Mask="( 000 ) 000 - 0000"/>
 
             <TextBlock Margin="0,32,0,4" Text=" Source" />
             <TextBox Text="{Binding Source}" />

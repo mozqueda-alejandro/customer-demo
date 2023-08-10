@@ -32,10 +32,16 @@ public partial class ClientsViewModel : ViewModelBase
     }
 
     #region Constructors
-    public ClientsViewModel() { }
+
+    public ClientsViewModel()
+    {
+        DeleteAllClients();
+        FilteredClients = new ObservableCollection<Client>();
+    }
     
     public ClientsViewModel(CimentalContext context)
     {
+        // DeleteAllClients();
         _context = context;
     }
 
@@ -92,6 +98,33 @@ public partial class ClientsViewModel : ViewModelBase
         _context.SaveChanges();
         _clients.Remove(client);
         FilteredClients.Remove(client);
+    }
+    
+    private void DeleteAllClients()
+    {
+        _context.Clients.RemoveRange(_clients);
+        _context.SaveChanges();
+        _clients.Clear();
+        FilteredClients.Clear();
+    }
+
+    [RelayCommand]
+    private void GetClientsFromCsv(string filePath)
+    {
+        CsvDataService _csvDataService = new();
+        var clients = _csvDataService.ReadCsv<Client>(filePath);
+        AddClientRange(clients);
+    }
+    
+    private void AddClientRange(IEnumerable<Client> clients)
+    {
+        _context.Clients.AddRange(clients);
+        _context.SaveChanges();
+        _clients.AddRange(clients);
+        foreach (var client in clients)
+        {
+            FilteredClients.Add(client);
+        }
     }
 
     private CimentalContext _context = new();

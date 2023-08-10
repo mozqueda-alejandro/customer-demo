@@ -30,6 +30,9 @@ public partial class MainWindowViewModel : ViewModelBase
     private void NavigateToDashboard() => NavigationService.NavigateTo<DashboardViewModel>();
     
     [RelayCommand]
+    private void NavigateToJobs() => NavigationService.NavigateTo<JobsViewModel>();
+    
+    [RelayCommand]
     private void NavigateToEstimates() => NavigationService.NavigateTo<EstimatesViewModel>();
 
     [RelayCommand]

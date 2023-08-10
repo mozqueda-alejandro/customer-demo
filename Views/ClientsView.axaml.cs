@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Metadata;
+using Avalonia.Platform.Storage;
+using Avalonia.Xaml.Interactivity;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CustomerDemo.Models;
 using CustomerDemo.Services;
@@ -14,6 +21,55 @@ using FluentAvalonia.Core;
 using FluentAvalonia.UI.Controls;
 
 namespace CustomerDemo.Views;
+
+// public class AttachedBehaviors : AvaloniaObject
+// {
+//     static AttachedBehaviors()
+//     {
+//         BehaviorsProperty.Changed.Subscribe(x => HandleBehaviorsChanged(x.Sender, x.NewValue.GetValueOrDefault<ObjectTemplate>()));
+//     }
+//
+//     public static readonly AttachedProperty<ObjectTemplate> BehaviorsProperty = AvaloniaProperty.RegisterAttached<AttachedBehaviors, Interactive, ObjectTemplate>(
+//         "Behaviors", default(ObjectTemplate), false, BindingMode.OneTime);
+//
+//
+//     private static void HandleBehaviorsChanged(AvaloniaObject element, ObjectTemplate? behaviorTemplate)
+//     {
+//         BehaviorCollection collection = null;
+//         if (behaviorTemplate != null) {
+//             var value = behaviorTemplate.Build();
+//
+//             if (value is BehaviorCollection behaviorCollection)
+//                 collection = behaviorCollection;
+//             else if (value is Behavior behavior)
+//                 collection = new BehaviorCollection { behavior };
+//             else throw new Exception($"AttachedBehaviors should be a BehaviorCollection or an IBehavior.");
+//         }
+//
+//         // collection may be null here, if e.NewValue is null
+//         Interaction.SetBehaviors(element, collection);
+//     }
+//
+//     public static void SetBehaviors(AvaloniaObject element, ObjectTemplate commandValue)
+//     {
+//         element.SetValue(BehaviorsProperty, commandValue);
+//     }
+//     
+//     public static ObjectTemplate GetBehaviors(AvaloniaObject element)
+//     {
+//         return element.GetValue(BehaviorsProperty);
+//     }
+// }
+//
+// public class ObjectTemplate
+// {
+//     [Content]
+//     [TemplateContent(TemplateResultType = typeof(object))]
+//     public object Content { get; set; }
+//
+//     public object Build(object data = null) => TemplateContent.Load<object>(Content).Result;
+// }
+
 
 public partial class ClientsView : UserControl
 {
@@ -109,13 +165,11 @@ public partial class ClientsView : UserControl
 
     private void MenuFlyout_OnPointerEntered(object? sender, PointerEventArgs e)
     {
-        // if (sender is not MenuItem menuItem) return;
-        // var client = (Client)menuItem.CommandParameter!;
-        //
-        // _canSelectRow = true;
-        // ClientsGrid.SelectedItem = client;
-
-        // SharedClass.MenuFlyout_OnPointerEntered();
+        if (sender is not MenuItem menuItem) return;
+        var client = (Client)menuItem.CommandParameter!;
+        
+        _canSelectRow = true;
+        ClientsGrid.SelectedItem = client;
     }
 
     private void MenuFlyout_OnPointerExited(object? sender, PointerEventArgs e)
@@ -125,4 +179,26 @@ public partial class ClientsView : UserControl
     }
 
     private bool _canSelectRow = false;
+
+    private async void ImportCsv_OnClick(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(this) ?? throw new NullReferenceException("Invalid Owner");
+        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = "Open CSV File",
+            AllowMultiple = false, 
+            FileTypeFilter = new FilePickerFileType[]
+            {
+                new("All CSVs")
+                {
+                    Patterns = new[] { "*.csv","*.txt" }
+                }
+            }
+                
+        });
+
+        if (files.Count < 1) return;
+        var fileName = files[0].Path.AbsolutePath;
+        _viewModel.GetClientsFromCsvCommand.Execute(fileName);
+    }
 }
