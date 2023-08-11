@@ -20,9 +20,6 @@ public class CsvDataService
         {
             throw new FileLoadException("File is not a CSV file", filePath);
         }
-
-        var path = filePath;
-        var isPath = File.Exists(path);
         
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {

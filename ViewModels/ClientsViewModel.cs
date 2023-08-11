@@ -21,7 +21,7 @@ public partial class ClientsViewModel : ViewModelBase
     private List<Client> _clients = new();
     
     [ObservableProperty]
-    private ObservableCollection<Client> _filteredClients = new();
+    private ObservableRangeCollection<Client> _filteredClients = new();
 
     [ObservableProperty]
     private string _searchText = string.Empty;
@@ -33,15 +33,10 @@ public partial class ClientsViewModel : ViewModelBase
 
     #region Constructors
 
-    public ClientsViewModel()
-    {
-        DeleteAllClients();
-        FilteredClients = new ObservableCollection<Client>();
-    }
+    public ClientsViewModel() { }
     
     public ClientsViewModel(CimentalContext context)
     {
-        // DeleteAllClients();
         _context = context;
     }
 
@@ -50,6 +45,7 @@ public partial class ClientsViewModel : ViewModelBase
     [RelayCommand]
     private async Task LoadClients()
     {
+        // DeleteAllClients();
         _clients = await _context.Clients.ToListAsync();
         ApplyFilter();
     }
@@ -58,16 +54,11 @@ public partial class ClientsViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(SearchText))
         {
-            FilteredClients.Clear();
-            
-            foreach (var client in _clients)
-            {
-                FilteredClients.Add(client);
-            }
+            FilteredClients = new ObservableRangeCollection<Client>(_clients);
         }
         else
         {
-            FilteredClients = new ObservableCollection<Client>(_clients.Where(c => c.FirstName.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase) ||
+            FilteredClients = new ObservableRangeCollection<Client>(_clients.Where(c => c.FirstName.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                                                                    c.LastName.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                                                                    c.Address.StartsWith(SearchText, StringComparison.OrdinalIgnoreCase) ||
                                                                                    c.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
@@ -111,20 +102,18 @@ public partial class ClientsViewModel : ViewModelBase
     [RelayCommand]
     private void GetClientsFromCsv(string filePath)
     {
-        CsvDataService _csvDataService = new();
-        var clients = _csvDataService.ReadCsv<Client>(filePath);
+        CsvDataService csvDataService = new();
+        var clients = csvDataService.ReadCsv<Client>(filePath);
         AddClientRange(clients);
     }
     
     private void AddClientRange(IEnumerable<Client> clients)
     {
-        _context.Clients.AddRange(clients);
+        var enumerable = clients.ToList();
+        _context.Clients.AddRange(enumerable);
         _context.SaveChanges();
-        _clients.AddRange(clients);
-        foreach (var client in clients)
-        {
-            FilteredClients.Add(client);
-        }
+        _clients.AddRange(enumerable);
+        FilteredClients.AddRange(enumerable);
     }
 
     private CimentalContext _context = new();

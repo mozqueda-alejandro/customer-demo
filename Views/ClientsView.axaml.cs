@@ -74,6 +74,7 @@ namespace CustomerDemo.Views;
 public partial class ClientsView : UserControl
 {
     private ClientsViewModel _viewModel;
+    private IDialogService _dialogService = new DialogService();
 
     public ClientsView()
     {
@@ -182,23 +183,7 @@ public partial class ClientsView : UserControl
 
     private async void ImportCsv_OnClick(object? sender, RoutedEventArgs e)
     {
-        var topLevel = TopLevel.GetTopLevel(this) ?? throw new NullReferenceException("Invalid Owner");
-        var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
-        {
-            Title = "Open CSV File",
-            AllowMultiple = false, 
-            FileTypeFilter = new FilePickerFileType[]
-            {
-                new("All CSVs")
-                {
-                    Patterns = new[] { "*.csv","*.txt" }
-                }
-            }
-                
-        });
-
-        if (files.Count < 1) return;
-        var fileName = files[0].Path.AbsolutePath;
+        var fileName = await _dialogService.OpenFileDialog(this, DialogFileFilter.Csv);
         _viewModel.GetClientsFromCsvCommand.Execute(fileName);
     }
 }

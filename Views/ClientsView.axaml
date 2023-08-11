@@ -28,8 +28,12 @@
             <Setter Property="BorderBrush" Value="Transparent" />
         </Style>
         
-        <Style Selector="ScrollViewer">
-            <Setter Property="AllowAutoHide" Value="True"/>
+        <Style Selector="DataGrid">
+            <Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+        </Style>
+        
+        <Style Selector="DataGrid:pointerover">
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
         </Style>
         
         <!-- <Style Selector="MenuItem"> -->
